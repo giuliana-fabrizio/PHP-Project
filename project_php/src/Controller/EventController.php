@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends AbstractController
 {
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+        private EntityManagerInterface $entityManager
+    ) {
+    }
+
     #[Route('/create_event', name: 'create_event')]
     public function createEvent(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -28,7 +35,15 @@ class EventController extends AbstractController
         }
 
         return $this->render('create.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/events', name: 'event_list')]
+    public function getEvents(): Response
+    {
+        return $this->render('event_list.html.twig', [
+            'events' => $this->eventRepository->findAll()
         ]);
     }
 }
