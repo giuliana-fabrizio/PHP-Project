@@ -3,13 +3,21 @@
 {% block title %}Liste des événements{% endblock %}
 
 {% block body %}
-    <ul class="list-group">
-        {% for event in events %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <p class="text-dark">{{ event.title }}</p>
-                <p class="text-dark">{{ event.description }}</p>
-                <span class="badge badge-primary badge-pill ml-2">{{ event.participantCount | default('non indiqué') }}</span>
-            </li>
-        {% endfor %}
-    </ul>
+    <div>
+        {% include 'filters.html.twig' %}
+        <ul class="list-group">
+            {% for event in events %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <p class="text-dark">{{ event.title }}</p>
+                    <p class="text-dark">{{ event.description }}</p>
+                    <p class="text-dark">{{ event.datetime|date('d/m/Y H:i') }}
+                    <span class="badge badge-primary badge-pill">{{ event.participantCount | default('non indiqué') }}</span>
+                </li>
+            {% else %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <p class="text-dark">Pas d'évènements à venir</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
