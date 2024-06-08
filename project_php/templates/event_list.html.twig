@@ -5,11 +5,19 @@
 {% block body %}
     <ul class="list-group">
         {% for event in events %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <p class="text-dark">{{ event.title }}</p>
-                <p class="text-dark">{{ event.description }}</p>
-                <span class="badge badge-primary badge-pill ml-2">{{ event.participantCount | default('non indiqué') }}</span>
-            </li>
+            {% if event.isPublic or is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('detail_event', {'id': event.id}) }}" class="text-dark">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <p class="text-dark">{{ event.title }}</p>
+                        <p class="text-dark">{{ event.description }}</p>
+                        {% if event.participantCount == event.participants|length %}
+                            <span class="badge badge-danger badge-pill ml-2">{{ event.participantCount | default('non indiqué') }}</span>
+                        {% else %}
+                            <span class="badge badge-primary badge-pill ml-2">{{ event.participantCount | default('non indiqué') }}</span>
+                        {% endif %}
+                    </li>
+                </a>
+            {% endif %}
         {% endfor %}
     </ul>
 {% endblock %}
