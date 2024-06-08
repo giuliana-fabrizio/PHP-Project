@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Profil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title text-center">Modifier Profil</h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(profileForm) }}
+                        {{ form_widget(profileForm) }}
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Valider</button>
+                            <a href="{{ path('app_profile') }}" class="btn btn-secondary">Annuler</a>
+                        </div>
+                    {{ form_end(profileForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
