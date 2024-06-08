@@ -6,6 +6,10 @@ return [
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], [], []],
     'app_index' => [[], ['_controller' => 'App\\Controller\\AppController::index'], [], [['text', '/']], [], [], []],
     'app_createevent' => [[], ['_controller' => 'App\\Controller\\AppController::createEvent'], [], [['text', '/event']], [], [], []],
+    'event_list' => [[], ['_controller' => 'App\\Controller\\EventController::getEvents'], [], [['text', '/events']], [], [], []],
+    'event_filter' => [[], ['_controller' => 'App\\Controller\\EventController::filterEvents'], [], [['text', '/event_filter']], [], [], []],
     'App\Controller\AppController::index' => [[], ['_controller' => 'App\\Controller\\AppController::index'], [], [['text', '/']], [], [], []],
     'App\Controller\AppController::createEvent' => [[], ['_controller' => 'App\\Controller\\AppController::createEvent'], [], [['text', '/event']], [], [], []],
+    'App\Controller\EventController::getEvents' => [[], ['_controller' => 'App\\Controller\\EventController::getEvents'], [], [['text', '/events']], [], [], []],
+    'App\Controller\EventController::filterEvents' => [[], ['_controller' => 'App\\Controller\\EventController::filterEvents'], [], [['text', '/event_filter']], [], [], []],
 ];

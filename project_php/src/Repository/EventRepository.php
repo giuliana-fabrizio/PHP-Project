@@ -16,28 +16,31 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    //    /**
-    //     * @return Event[] Returns an array of Event objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Event[] Returns an array of Event objects
+     */
+    public function findByFilters(?string $title, ?string $date, ?string $isPublic): array
+    {
+        $qb = $this->createQueryBuilder('e');
 
-    //    public function findOneBySomeField($value): ?Event
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($title !== null && $title !== '') {
+            $qb->andWhere('e.title LIKE :title')
+                ->setParameter('title', '%' . $title . '%');
+        }
+
+        // TODO
+        if ($date !== null && $date !== '') {
+            $qb->andWhere('e.datetime = :date')
+                ->setParameter('date', $date);
+        }
+
+        if ($isPublic !== null && $isPublic !== '') {
+            $qb->andWhere('e.is_public = :isPublic')
+                ->setParameter('isPublic', $isPublic);
+        }
+
+        return $qb->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

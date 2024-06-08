@@ -50,6 +50,18 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/event_filter', name: 'event_filter')]
+    public function filterEvents(Request $request): Response
+    {
+        $name = $request->query->get('name');
+        $date = $request->query->get('date');
+        $isPublic = $request->query->get('isPublic');
+
+        $events = $this->eventRepository->findByFilters($name, $date, $isPublic);
+
+        return $this->render('event_list.html.twig', ['events' => $events]);
+    }
+
     #[Route('/events/{id}', name: 'detail_event')]
     public function detailEvent(Event $event): Response
     {

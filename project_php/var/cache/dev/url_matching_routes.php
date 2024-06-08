@@ -10,6 +10,8 @@ return [
     [ // $staticRoutes
         '/' => [[['_route' => 'app_index', '_controller' => 'App\\Controller\\AppController::index'], null, null, null, false, false, null]],
         '/event' => [[['_route' => 'app_createevent', '_controller' => 'App\\Controller\\AppController::createEvent'], null, null, null, false, false, null]],
+        '/events' => [[['_route' => 'event_list', '_controller' => 'App\\Controller\\EventController::getEvents'], null, null, null, false, false, null]],
+        '/event_filter' => [[['_route' => 'event_filter', '_controller' => 'App\\Controller\\EventController::filterEvents'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

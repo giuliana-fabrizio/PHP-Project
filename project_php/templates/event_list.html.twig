@@ -3,6 +3,8 @@
 {% block title %}Liste des événements{% endblock %}
 
 {% block body %}
+<div>
+    {% include 'filters.html.twig' %}
     <ul class="list-group">
         {% for event in events %}
             {% if event.isPublic or is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -20,4 +22,5 @@
             {% endif %}
         {% endfor %}
     </ul>
+</div>
 {% endblock %}
