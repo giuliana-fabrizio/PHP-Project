@@ -4,7 +4,7 @@
 
 {% block body %}
 <div>
-    {% if app.request.pathInfo != '/' %}
+    {% if app.request.pathInfo == '/events' %}
         {% include 'filters.html.twig' %}
     {% endif %}
     <ul class="list-group">
