@@ -18,6 +18,8 @@ class UserProfileController extends AbstractController
     {
         $user = $this->getUser();
 
+        $this->denyAccessUnlessGranted('view_profile', $user);
+
         return $this->render('profile/view.html.twig', [
             'user' => $user,
         ]);
@@ -28,12 +30,14 @@ class UserProfileController extends AbstractController
     {
         $user = $this->getUser();
 
+        $this->denyAccessUnlessGranted('edit_profile', $user);
+
         $profileForm = $this->createForm(UserProfileType::class, $user);
         $profileForm->handleRequest($request);
 
         $passwordForm = $this->createForm(ChangePasswordType::class);
         $passwordForm->handleRequest($request);
-
+        
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $doctrine->getManager()->flush();
             $this->addFlash('success', 'Profile updated successfully');
@@ -51,6 +55,7 @@ class UserProfileController extends AbstractController
 
         return $this->render('profile/edit.html.twig', [
             'profileForm' => $profileForm->createView(),
+            'passwordForm' => $passwordForm->createView(),
         ]);
     }
 
@@ -58,6 +63,8 @@ class UserProfileController extends AbstractController
     public function editPassword(Request $request, PersistenceManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+
+        $this->denyAccessUnlessGranted('edit_profile', $user);
 
         $passwordForm = $this->createForm(ChangePasswordType::class);
         $passwordForm->handleRequest($request);

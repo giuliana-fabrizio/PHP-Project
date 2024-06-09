@@ -8,15 +8,17 @@
     <p>Date et heure : {{ event.datetime|date('d/m/Y H:i') }}</p>
     <p>Nombre de participants : {{ event.participants|length }} / {{ event.participantCount }}</p>
 
-    {% if app.user %}
-        {% if event.participantCount == event.participants|length %}
-            <button class="btn btn-secondary" disabled>Complet</button>
-        {% elseif event.participants.contains(app.user) %}
-            <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
+    {% if event.isPublic %}
+        {% if app.user %}
+            {% if event.participants.contains(app.user) %}
+                <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
+            {% else %}
+                <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+            {% endif %}
         {% else %}
-            <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+            <p>Pour vous inscrire à cet événement, veuillez vous connecter.</p>
         {% endif %}
     {% else %}
-        <a href="{{ path('app_login') }}" class="btn btn-primary">Connectez-vous pour vous inscrire</a>
+        <p>Cet événement est privé.</p>
     {% endif %}
 {% endblock %}
