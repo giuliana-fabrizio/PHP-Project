@@ -1,7 +1,5 @@
 <?php
 
-// src/DataFixtures/UserFixtures.php
-
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -23,56 +21,31 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user1 = new User();
-        $user1->setNom('Dupont');
-        $user1->setPrenom('Jean');
-        $user1->setEmail('jean.dupont@example.com');
-        $user1->setRoles(['ROLE_USER']);
-        $user1->setPassword($this->passwordHasher->hashPassword($user1, 'password1'));
+        $users = [
+            ['nom' => 'Dupont', 'prenom' => 'Jean', 'email' => 'jean.dupont@example.com', 'password' => 'password1'],
+            ['nom' => 'Martin', 'prenom' => 'Marie', 'email' => 'marie.martin@example.com', 'password' => 'password2'],
+            ['nom' => 'Durand', 'prenom' => 'Pierre', 'email' => 'pierre.durand@example.com', 'password' => 'password3'],
+        ];
 
-        $errors = $this->validator->validate($user1);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                echo $error->getMessage()."\n";
+        foreach ($users as $key => $userData) {
+            $user = new User();
+            $user->setNom($userData['nom']);
+            $user->setPrenom($userData['prenom']);
+            $user->setEmail($userData['email']);
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword($this->passwordHasher->hashPassword($user, $userData['password']));
+            
+            $errors = $this->validator->validate($user);
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    echo $error->getMessage() . "\n";
+                }
+                return;
             }
-            return;
+
+            $manager->persist($user);
+            $this->addReference('user_' . $key, $user);
         }
-
-        $manager->persist($user1);
-
-        $user2 = new User();
-        $user2->setNom('Martin');
-        $user2->setPrenom('Marie');
-        $user2->setEmail('marie.martin@example.com');
-        $user2->setRoles(['ROLE_USER']);
-        $user2->setPassword($this->passwordHasher->hashPassword($user2, 'password2'));
-
-        $errors = $this->validator->validate($user2);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                echo $error->getMessage()."\n";
-            }
-            return;
-        }
-
-        $manager->persist($user2);
-
-        $user3 = new User();
-        $user3->setNom('Durand');
-        $user3->setPrenom('Pierre');
-        $user3->setEmail('pierre.durand@example.com');
-        $user3->setRoles(['ROLE_USER']);
-        $user3->setPassword($this->passwordHasher->hashPassword($user3, 'password3'));
-
-        $errors = $this->validator->validate($user3);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                echo $error->getMessage()."\n";
-            }
-            return;
-        }
-
-        $manager->persist($user3);
 
         $manager->flush();
     }
