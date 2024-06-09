@@ -19,7 +19,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Event[] Returns an array of Event objects
      */
-    public function findByFilters(?string $title, ?string $date, ?string $isPublic): array
+    public function findByFilters(?string $title, ?string $date_start, ?string $date_end, ?string $isPublic): array
     {
         $qb = $this->createQueryBuilder('e');
 
@@ -28,10 +28,19 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameter('title', '%' . $title . '%');
         }
 
-        // TODO
-        if ($date !== null && $date !== '') {
-            $qb->andWhere('e.datetime = :date')
-                ->setParameter('date', $date);
+        if ($date_start !== null && $date_start !== '') {
+            $dateTime = new \DateTime($date_start);
+            $formattedDate = $dateTime->format('Y-m-d hh:mm:ss');
+
+            $qb->andWhere('e.datetime_start >= :date_start')
+                ->setParameter('date_start', $formattedDate . '%');
+        }
+
+        if ($date_end !== null && $date_end !== '') {
+            $dateTime = (new \DateTime($date_end))->setTime(23, 59, 59);
+
+            $qb->andWhere('e.datetime_end <= :date_end')
+                ->setParameter('date_end', $dateTime);
         }
 
         if ($isPublic !== null && $isPublic !== '') {

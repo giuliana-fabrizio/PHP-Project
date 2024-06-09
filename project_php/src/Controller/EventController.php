@@ -54,10 +54,11 @@ class EventController extends AbstractController
     public function filterEvents(Request $request): Response
     {
         $name = $request->query->get('name');
-        $date = $request->query->get('date');
+        $date_start = $request->query->get('date_start');
+        $date_end = $request->query->get('date_end');
         $isPublic = $request->query->get('isPublic');
 
-        $events = $this->eventRepository->findByFilters($name, $date, $isPublic);
+        $events = $this->eventRepository->findByFilters($name, $date_start, $date_end, $isPublic);
 
         return $this->render('event_list.html.twig', ['events' => $events]);
     }
