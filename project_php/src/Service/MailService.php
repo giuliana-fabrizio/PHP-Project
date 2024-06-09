@@ -27,11 +27,11 @@ class MailService
 
     public function sendRegistrationConfirmation(string $to): void
     {
-        $this->sendEmail($to, 'Confirmation d\'inscription', 'Vous êtes inscrit à l\'événement.');
+        $this->sendEmail($to, 'Confirmation d\'inscription', 'Vous êtes inscrit à l\'évènement.');
     }
 
     public function sendCancellationConfirmation(string $to): void
     {
-        $this->sendEmail($to, 'Confirmation d\'annulation', 'Vous avez annulé votre inscription à l\'événement.');
+        $this->sendEmail($to, 'Confirmation d\'annulation', 'Vous avez annulé votre inscription à l\'évènement.');
     }
 }

@@ -19,7 +19,7 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre de l\'événement'
+                'label' => 'Titre de l\'évènement'
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -27,11 +27,11 @@ class EventType extends AbstractType
             ])
             ->add('datetime_start', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de début de l\'événement'
+                'label' => 'Date et heure de début de l\'évènement'
             ])
             ->add('datetime_end', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de fin de l\'événement'
+                'label' => 'Date et heure de fin de l\'évènement'
             ])
             ->add('participant_count', IntegerType::class, [
                 'label' => 'Nombre de participants'

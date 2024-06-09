@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail de l'événement{% endblock %}
+{% block title %}Détail de l'évènement{% endblock %}
 
 {% block body %}
     <h1>{{ event.title }}</h1>
@@ -17,9 +17,9 @@
                 <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
             {% endif %}
         {% else %}
-            <p>Pour vous inscrire à cet événement, veuillez vous connecter.</p>
+            <p>Pour vous inscrire à cet évènement, veuillez vous connecter.</p>
         {% endif %}
     {% else %}
-        <p>Cet événement est privé.</p>
+        <p>Cet évènement est privé.</p>
     {% endif %}
 {% endblock %}

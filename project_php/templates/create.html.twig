@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un nouvel événement{% endblock %}
+{% block title %}Créer un nouvel évènement{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
@@ -8,12 +8,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="card-title text-center">Créer un nouvel événement</h1>
+                    <h1 class="card-title text-center">Créer un nouvel évènement</h1>
                 </div>
                 <div class="card-body">
                     {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                         <div class="form-group">
-                            {{ form_label(form.title, 'Titre de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_label(form.title, 'Titre de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
                             {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
@@ -21,11 +21,11 @@
                             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.datetime_start, 'Date et heure de début de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_label(form.datetime_start, 'Date et heure de début de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
                             {{ form_widget(form.datetime_start, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.datetime_end, 'Date et heure de fin de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_label(form.datetime_end, 'Date et heure de fin de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
                             {{ form_widget(form.datetime_end, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
