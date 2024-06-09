@@ -5,7 +5,8 @@
 {% block body %}
     <h1>{{ event.title }}</h1>
     <p>{{ event.description }}</p>
-    <p>Date et heure : {{ event.datetime|date('d/m/Y H:i') }}</p>
+    <p>Date et heure de départ : {{ event.datetimeStart|date('d/m/Y H:i') }}</p>
+    <p>Date et heure de fin : {{ event.datetimeEnd|date('d/m/Y H:i') }}</p>
     <p>Nombre de participants : {{ event.participants|length }} / {{ event.participantCount }}</p>
 
     {% if event.isPublic %}
