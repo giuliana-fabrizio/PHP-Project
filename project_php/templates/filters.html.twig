@@ -23,6 +23,9 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary mt-2">Filtrer</button>
+            {% if app.request.query.has('name') or app.request.query.has('date_start') or app.request.query.has('date_end') or app.request.query.has('isPublic') %}
+                <button href="{{ path('event_list') }}" class="btn btn-secondary mt-2">Réinitialiser</a>
+            {% endif %}
         </form>
     </div>
 {% endblock %}
