@@ -46,4 +46,13 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/my_events', name: 'my_events')]
+    public function getUserEvents(): Response
+    {
+        $user = $this->getUser();
+        $events = $user->getEvents();
+
+        return $this->render('event_list.html.twig', ['events' => $events]);
+    }
 }
