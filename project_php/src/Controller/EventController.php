@@ -117,4 +117,44 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
     }
+
+    #[Route('/event/{id}/edit', name:'event_edit')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function editEvent(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    {
+        if ($event->getCreator() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm(EventType::class, $event);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+        }
+
+        return $this->render('edit.html.twig', [
+            'form' => $form->createView()
+            ]);
+    }
+
+    #[Route('/event/{id}/delete', name:'event_delete')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function deleteEvent(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    {
+        if ($event->getCreator() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($request->isMethod('POST')) {
+            $entityManager->remove($event);
+            $entityManager->flush();
+            return $this->redirectToRoute('events');
+        }
+
+        return $this->render('delete.html.twig', [
+            'event'=> $event,
+            ]);
+    }
 }
