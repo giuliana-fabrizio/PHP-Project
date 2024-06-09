@@ -26,6 +26,19 @@
         </div>
     </nav>
     <div class="container mt-4">
+        <div class="toast-container top-0 end-0 p-3">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="align-items-center bg-{{ type }} border-0 rounded p-3 shadow-sm toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                {{message}}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
         {% block body %}{% endblock %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
