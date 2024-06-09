@@ -34,7 +34,7 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            return $this->redirectToRoute('event_list');
+            return $this->redirectToRoute('events');
         }
 
         return $this->render('create.html.twig', [
@@ -42,7 +42,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/events', name: 'event_list')]
+    #[Route('/events', name: 'events')]
     public function getEvents(): Response
     {
         return $this->render('event_list.html.twig', [
