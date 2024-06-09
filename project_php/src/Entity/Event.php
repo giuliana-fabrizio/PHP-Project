@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -28,6 +30,14 @@ class Event
 
     #[ORM\Column]
     private ?bool $is_public = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
+    private Collection $participants;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,6 +108,28 @@ class Event
     {
         $this->is_public = $is_public;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(User $user): static
+    {
+        if (!$this->participants->contains($user)) {
+            $this->participants->add($user);
+        }
+        return $this;
+    }
+
+    public function removeParticipant(User $user): static
+    {
+        $this->participants->removeElement($user);
         return $this;
     }
 }

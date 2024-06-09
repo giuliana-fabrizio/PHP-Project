@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'événement{% endblock %}
+
+{% block body %}
+    <h1>{{ event.title }}</h1>
+    <p>{{ event.description }}</p>
+    <p>Date et heure : {{ event.datetime|date('d/m/Y H:i') }}</p>
+    <p>Nombre de participants : {{ event.participants|length }} / {{ event.participantCount }}</p>
+
+    {% if app.user %}
+        {% if event.participantCount == event.participants|length %}
+            <button class="btn btn-secondary" disabled>Complet</button>
+        {% elseif event.participants.contains(app.user) %}
+            <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
+        {% else %}
+            <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+        {% endif %}
+    {% else %}
+        <a href="{{ path('app_login') }}" class="btn btn-primary">Connectez-vous pour vous inscrire</a>
+    {% endif %}
+{% endblock %}
