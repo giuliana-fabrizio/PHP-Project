@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 {
@@ -43,6 +44,10 @@ class UserType extends AbstractType
                     'constraints' => [
                         new NotBlank(['message' => 'Saisir un mot de passe']),
                         new Length(['min' => 8, 'minMessage' => 'Votre mot de passe doit avoir une longueur minimale de {{ limit }} caractères.']),
+                        new Regex([
+                            'pattern' => '/^(?=.[A-Za-z])(?=.\d)/',
+                            'message' => 'Le mot de passe doit contenir au moins une lettre et un chiffre.',
+                        ]),
                     ]
                 ],
                 'second_options' => [
