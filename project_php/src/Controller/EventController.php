@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\User;
 use App\Service\MailService;
 use App\Form\EventType;
 use App\Repository\EventRepository;
@@ -23,6 +22,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/create_event', name: 'create_event')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function createEvent(Request $request, EntityManagerInterface $entityManager): Response
     {
         $event = new Event();
@@ -34,7 +34,7 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('event_list');
         }
 
         return $this->render('create.html.twig', [
@@ -65,14 +65,18 @@ class EventController extends AbstractController
     #[Route('/events/{id}', name: 'detail_event')]
     public function detailEvent(Event $event): Response
     {
+
         return $this->render('detail.html.twig', [
             'event' => $event,
         ]);
     }
+
     #[Route('/event/{id}/register', name: 'event_register')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function register(Event $event, EntityManagerInterface $entityManager, MailService $mailService): Response
     {
+        $this->denyAccessUnlessGranted('register', $event);
+
         $user = $this->getUser();
         if ($event->getParticipantCount() > count($event->getParticipants())) {
             $event->addParticipant($user);
