@@ -4,7 +4,9 @@
 
 {% block body %}
 <div>
-    {% include 'filters.html.twig' %}
+    {% if app.request.pathInfo != '/' %}
+        {% include 'filters.html.twig' %}
+    {% endif %}
     <ul class="list-group">
         {% for event in events %}
             {% if event.isPublic or is_granted('IS_AUTHENTICATED_FULLY') %}
