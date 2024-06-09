@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Service\MailService;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Service\RemainingPlacesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class EventController extends AbstractController
 {
+    private $remainingPlacesService;
+
     public function __construct(
         private readonly EventRepository $eventRepository,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        RemainingPlacesService $remainingPlacesService
     ) {
+        $this->remainingPlacesService = $remainingPlacesService;
     }
 
     #[Route('/create_event', name: 'create_event')]
@@ -46,6 +51,12 @@ class EventController extends AbstractController
     #[Route('/events', name: 'events')]
     public function getEvents(): Response
     {
+        $events = $this->eventRepository->findAll();
+        
+        foreach ($events as $event) {
+            $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
+        }
+
         return $this->render('event_list.html.twig', [
             'events' => $this->eventRepository->findAll()
         ]);
@@ -67,8 +78,11 @@ class EventController extends AbstractController
     #[Route('/events/{id}', name: 'detail_event')]
     public function detailEvent(Event $event): Response
     {
+        $remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
+
         return $this->render('detail.html.twig', [
             'event' => $event,
+            'remainingPlaces' => $remainingPlaces
         ]);
     }
 
