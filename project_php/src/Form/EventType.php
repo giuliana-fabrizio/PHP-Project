@@ -25,9 +25,13 @@ class EventType extends AbstractType
                 'label' => 'Description',
                 'required' => false
             ])
-            ->add('datetime', DateTimeType::class, [
+            ->add('datetime_start', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de l\'événement'
+                'label' => 'Date et heure de début de l\'événement'
+            ])
+            ->add('datetime_end', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date et heure de fin de l\'événement'
             ])
             ->add('participant_count', IntegerType::class, [
                 'label' => 'Nombre de participants'

@@ -23,7 +23,10 @@ class Event
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $datetime = null;
+    private ?\DateTimeInterface $datetime_start = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $datetime_end = null;
 
     #[ORM\Column]
     private ?int $participant_count = null;
@@ -75,14 +78,26 @@ class Event
         return $this;
     }
 
-    public function getDatetime(): ?\DateTimeInterface
+    public function getDatetimeStart(): ?\DateTimeInterface
     {
-        return $this->datetime;
+        return $this->datetime_start;
     }
 
-    public function setDatetime(\DateTimeInterface $datetime): static
+    public function setDatetimeStart(\DateTimeInterface $datetime_start): static
     {
-        $this->datetime = $datetime;
+        $this->datetime_start = $datetime_start;
+
+        return $this;
+    }
+
+    public function getDatetimeEnd(): ?\DateTimeInterface
+    {
+        return $this->datetime_end;
+    }
+
+    public function setDatetimeEnd(\DateTimeInterface $datetime_end): static
+    {
+        $this->datetime_end = $datetime_end;
 
         return $this;
     }

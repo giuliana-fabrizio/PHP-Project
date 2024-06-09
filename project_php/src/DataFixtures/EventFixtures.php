@@ -14,7 +14,8 @@ class EventFixtures extends Fixture
             $event = new Event();
             $event->setTitle('Event ' . $i);
             $event->setDescription('Description for Event ' . $i);
-            $event->setDatetime(new \DateTime('now + ' . $i . ' days'));
+            $event->setDatetimeStart(new \DateTime('now + ' . $i . ' days'));
+            $event->setDatetimeEnd(new \DateTime('now + ' . ($i + 1) . ' days'));
             $event->setParticipantCount(mt_rand(1, 100));
             $event->setIsPublic((bool)mt_rand(0, 1));
 
