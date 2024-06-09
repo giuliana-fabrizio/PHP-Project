@@ -21,8 +21,12 @@
                             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.datetime, 'Date et heure de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.datetime, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_label(form.datetime_start, 'Date et heure de début de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_widget(form.datetime_start, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.datetime_end, 'Date et heure de fin de l\'événement', {'label_attr': {'class': 'control-label'}}) }}
+                            {{ form_widget(form.datetime_end, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.participant_count, 'Nombre de participants', {'label_attr': {'class': 'control-label'}}) }}
