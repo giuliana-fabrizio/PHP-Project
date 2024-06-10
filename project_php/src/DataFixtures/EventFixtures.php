@@ -5,8 +5,9 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Event;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class EventFixtures extends Fixture
+class EventFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -19,9 +20,19 @@ class EventFixtures extends Fixture
             $event->setParticipantCount(mt_rand(1, 100));
             $event->setIsPublic((bool)mt_rand(0, 1));
 
+            $userReference = $this->getReference('user_' . ($i % 3));
+            $event->setCreator($userReference);
+
             $manager->persist($event);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class,
+        ];
     }
 }
