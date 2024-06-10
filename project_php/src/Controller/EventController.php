@@ -16,19 +16,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class EventController extends AbstractController
 {
-    private $remainingPlacesService;
-
     public function __construct(
         private readonly EventRepository $eventRepository,
         private EntityManagerInterface $entityManager,
-        RemainingPlacesService $remainingPlacesService
-    ) {
-        $this->remainingPlacesService = $remainingPlacesService;
-    }
+        private RemainingPlacesService $remainingPlacesService
+    ) {}
 
     #[Route('/create_event', name: 'create_event')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function createEvent(Request $request, EntityManagerInterface $entityManager): Response
+    public function createEvent(Request $request): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -37,8 +33,8 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setCreator($this->getUser());
-            $entityManager->persist($event);
-            $entityManager->flush();
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('events');
         }
@@ -52,13 +48,13 @@ class EventController extends AbstractController
     public function getEvents(): Response
     {
         $events = $this->eventRepository->findAll();
-        
+
         foreach ($events as $event) {
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
         return $this->render('event_list.html.twig', [
-            'events' => $this->eventRepository->findAll()
+            'events' => $events
         ]);
     }
 
@@ -88,15 +84,15 @@ class EventController extends AbstractController
 
     #[Route('/event/{id}/register', name: 'event_register')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function register(Event $event, EntityManagerInterface $entityManager, MailService $mailService): Response
+    public function register(Event $event, MailService $mailService): Response
     {
         $this->denyAccessUnlessGranted('register', $event);
 
         $user = $this->getUser();
         if ($event->getParticipantCount() > count($event->getParticipants())) {
             $event->addParticipant($user);
-            $entityManager->persist($event);
-            $entityManager->flush();
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
 
             $mailService->sendRegistrationConfirmation($user->getEmail());
         }
@@ -106,12 +102,12 @@ class EventController extends AbstractController
 
     #[Route('/event/{id}/unregister', name: 'event_unregister')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function unregister(Event $event, EntityManagerInterface $entityManager, MailService $mailService): Response
+    public function unregister(Event $event, MailService $mailService): Response
     {
         $user = $this->getUser();
         $event->removeParticipant($user);
-        $entityManager->persist($event);
-        $entityManager->flush();
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
 
         $mailService->sendCancellationConfirmation($user->getEmail());
 
@@ -119,42 +115,31 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/edit', name:'event_edit')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function editEvent(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    #[IsGranted('edit', subject: 'event')]
+    public function editEvent(Request $request, Event $event): Response
     {
-        if ($event->getCreator() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
-
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
             return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
         }
 
         return $this->render('edit.html.twig', [
             'form' => $form->createView()
-            ]);
+        ]);
     }
 
-    #[Route('/event/{id}/delete', name:'event_delete')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function deleteEvent(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    #[Route('/event/{id}/delete', name:'event_delete', methods: ['POST'])]
+    #[IsGranted('delete', subject: 'event')]
+    public function deleteEvent(Request $request, Event $event): Response
     {
-        if ($event->getCreator() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
+        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+            $this->entityManager->remove($event);
+            $this->entityManager->flush();
         }
 
-        if ($request->isMethod('POST')) {
-            $entityManager->remove($event);
-            $entityManager->flush();
-            return $this->redirectToRoute('events');
-        }
-
-        return $this->render('delete.html.twig', [
-            'event'=> $event,
-            ]);
+        return $this->redirectToRoute('events');
     }
 }
