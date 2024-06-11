@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\UserProfileType;
 use App\Form\ChangePasswordType;
+use App\Security\Voter\ProfileVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,12 +14,23 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 class UserProfileController extends AbstractController
 {
+    private $profileVoter;
+
+    public function __construct(ProfileVoter $profileVoter)
+    {
+        $this->profileVoter = $profileVoter;
+    }
+
     #[Route('/profile', name: 'app_profile')]
     public function viewProfile(Request $request): Response
     {
         $user = $this->getUser();
 
-        $this->denyAccessUnlessGranted('view_profile', $user);
+        // $this->denyAccessUnlessGranted('view_profile', $user);
+        if (!$this->isGranted(ProfileVoter::VIEW, $user)) {
+            $this->addFlash('danger', "Vous n'avez pas la permission d'accéder à cette ressource.");
+            throw $this->createAccessDeniedException('You do not have permission to view this profile.');
+        }
 
         return $this->render('profile/view.html.twig', [
             'user' => $user,
@@ -30,7 +42,11 @@ class UserProfileController extends AbstractController
     {
         $user = $this->getUser();
 
-        $this->denyAccessUnlessGranted('edit_profile', $user);
+        // $this->denyAccessUnlessGranted('edit_profile', $user);
+        if (!$this->isGranted(ProfileVoter::EDIT, $user)) {
+            $this->addFlash('danger', "Vous n'avez pas la permission d'accéder à cette ressource.");
+            throw $this->createAccessDeniedException('You do not have permission to view this profile.');
+        }
 
         $profileForm = $this->createForm(UserProfileType::class, $user);
         $profileForm->handleRequest($request);
@@ -64,7 +80,7 @@ class UserProfileController extends AbstractController
     {
         $user = $this->getUser();
 
-        $this->denyAccessUnlessGranted('edit_profile', $user);
+        // $this->denyAccessUnlessGranted('edit_profile', $user);
 
         $passwordForm = $this->createForm(ChangePasswordType::class);
         $passwordForm->handleRequest($request);

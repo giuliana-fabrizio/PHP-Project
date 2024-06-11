@@ -23,7 +23,6 @@ class ProfileVoter extends Voter
         $user = $token->getUser();
 
         if (!$user instanceof UserInterface) {
-            // L'utilisateur doit être connecté
             return false;
         }
 
