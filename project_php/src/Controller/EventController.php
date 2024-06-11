@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Security\Voter\EventVoter;
 use App\Service\MailService;
 use App\Form\EventType;
 use App\Repository\EventRepository;
@@ -71,7 +72,7 @@ class EventController extends AbstractController
         return $this->render('event_list.html.twig', ['events' => $events]);
     }
 
-    #[Route('/events/{id}', name: 'detail_event')]
+    #[Route('/event/{id}', name: 'detail_event')]
     public function detailEvent(Event $event): Response
     {
         $remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
@@ -115,9 +116,14 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/edit', name:'event_edit')]
-    #[IsGranted('edit', subject: 'event')]
+    // #[IsGranted('edit', subject: 'event')]
     public function editEvent(Request $request, Event $event): Response
     {
+        if (!$this->isGranted(EventVoter::EDIT, $event)) {
+            $this->addFlash('danger', "Vous n'avez pas la permission de modifier cet évènement.");
+            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+        }
+
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);
@@ -131,10 +137,15 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/delete', name:'event_delete', methods: ['POST'])]
-    #[IsGranted('delete', subject: 'event')]
+    #[Route('/event/{id}/delete', name:'event_delete')]
+    // #[IsGranted('delete', subject: 'event')]
     public function deleteEvent(Request $request, Event $event): Response
     {
+        if (!$this->isGranted(EventVoter::DELETE, $event)) {
+            $this->addFlash('danger', "Vous n'avez pas la permission de supprimer cet évènement.");
+            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($event);
             $this->entityManager->flush();
