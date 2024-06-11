@@ -50,9 +50,6 @@ class UserProfileController extends AbstractController
 
         $profileForm = $this->createForm(UserProfileType::class, $user);
         $profileForm->handleRequest($request);
-
-        // $passwordForm = $this->createForm(ChangePasswordType::class);
-        // $passwordForm->handleRequest($request);
         
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $doctrine->getManager()->flush();
@@ -60,18 +57,8 @@ class UserProfileController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
-        // if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-        //     $plainPassword = $passwordForm->get('plainPassword')->getData();
-        //     $encodedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-        //     $user->setPassword($encodedPassword);
-        //     $doctrine->getManager()->flush();
-        //     $this->addFlash('success', 'Password updated successfully');
-        //     return $this->redirectToRoute('app_profile');
-        // }
-
         return $this->render('profile/edit.html.twig', [
             'profileForm' => $profileForm->createView(),
-            // 'passwordForm' => $passwordForm->createView(),
         ]);
     }
 
