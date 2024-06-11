@@ -52,13 +52,13 @@ class EventController extends AbstractController
     public function getEvents(): Response
     {
         $events = $this->eventRepository->findAll();
-        
+
         foreach ($events as $event) {
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
         return $this->render('event_list.html.twig', [
-            'events' => $this->eventRepository->findAll()
+            'events' => $events
         ]);
     }
 
