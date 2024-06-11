@@ -40,7 +40,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('events');
         }
 
-        return $this->render('create.html.twig', [
+        return $this->render('event/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -54,7 +54,7 @@ class EventController extends AbstractController
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
-        return $this->render('event_list.html.twig', [
+        return $this->render('event/list.html.twig', [
             'events' => $events
         ]);
     }
@@ -69,7 +69,7 @@ class EventController extends AbstractController
 
         $events = $this->eventRepository->findByFilters($name, $date_start, $date_end, $isPublic);
 
-        return $this->render('event_list.html.twig', ['events' => $events]);
+        return $this->render('event/list.html.twig', ['events' => $events]);
     }
 
     #[Route('/event/{id}', name: 'detail_event')]
@@ -77,7 +77,7 @@ class EventController extends AbstractController
     {
         $remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
 
-        return $this->render('detail.html.twig', [
+        return $this->render('event/details.html.twig', [
             'event' => $event,
             'remainingPlaces' => $remainingPlaces
         ]);

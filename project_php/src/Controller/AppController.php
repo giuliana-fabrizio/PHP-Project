@@ -26,7 +26,7 @@ class AppController extends AbstractController
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
-        return $this->render('event_list.html.twig', [
+        return $this->render('event/list.html.twig', [
             'events' => $events
         ]);
     }

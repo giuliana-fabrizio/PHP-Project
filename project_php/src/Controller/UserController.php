@@ -53,6 +53,6 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $events = $user->getEvents();
 
-        return $this->render('event_list.html.twig', ['events' => $events]);
+        return $this->render('event/list.html.twig', ['events' => $events]);
     }
 }

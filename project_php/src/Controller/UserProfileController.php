@@ -32,7 +32,7 @@ class UserProfileController extends AbstractController
             throw $this->createAccessDeniedException("Vous n'avez pas la permission de voir ce profil.");
         }
 
-        return $this->render('profile/view.html.twig', [
+        return $this->render('user/profile.html.twig', [
             'user' => $user,
         ]);
     }
@@ -57,7 +57,7 @@ class UserProfileController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
-        return $this->render('profile/edit.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'profileForm' => $profileForm->createView(),
         ]);
     }
@@ -81,7 +81,7 @@ class UserProfileController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
-        return $this->render('profile/edit_password.html.twig', [
+        return $this->render('user/edit_password.html.twig', [
             'passwordForm' => $passwordForm->createView(),
         ]);
     }
