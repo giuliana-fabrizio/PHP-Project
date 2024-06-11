@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\UserProfileType;
 use App\Form\ChangePasswordType;
-use App\Security\Voter\ProfileVoter;
+use App\Security\Voter\UserProfileVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +14,11 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 class UserProfileController extends AbstractController
 {
-    private $profileVoter;
+    private $UserProfileVoter;
 
-    public function __construct(ProfileVoter $profileVoter)
+    public function __construct(UserProfileVoter $UserProfileVoter)
     {
-        $this->profileVoter = $profileVoter;
+        $this->UserProfileVoter = $UserProfileVoter;
     }
 
     #[Route('/profile', name: 'app_profile')]
@@ -27,7 +27,7 @@ class UserProfileController extends AbstractController
         $user = $this->getUser();
 
         // $this->denyAccessUnlessGranted('view_profile', $user);
-        if (!$this->isGranted(ProfileVoter::VIEW, $user)) {
+        if (!$this->isGranted(UserProfileVoter::VIEW, $user)) {
             $this->addFlash('danger', "Vous n'avez pas la permission de voir ce profil.");
             throw $this->createAccessDeniedException("Vous n'avez pas la permission de voir ce profil.");
         }
@@ -43,7 +43,7 @@ class UserProfileController extends AbstractController
         $user = $this->getUser();
 
         // $this->denyAccessUnlessGranted('edit_profile', $user);
-        if (!$this->isGranted(ProfileVoter::EDIT, $user)) {
+        if (!$this->isGranted(UserProfileVoter::EDIT, $user)) {
             $this->addFlash('danger', "Vous n'avez pas la permission de modifier ce profil.");
             throw $this->createAccessDeniedException("Vous n'avez pas la permission de modifier ce profil.");
         }

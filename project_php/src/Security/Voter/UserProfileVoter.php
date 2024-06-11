@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProfileVoter extends Voter
+class UserProfileVoter extends Voter
 {
     const VIEW = 'view_profile';
     const EDIT = 'edit_profile';
