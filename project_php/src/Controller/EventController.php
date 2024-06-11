@@ -23,28 +23,6 @@ class EventController extends AbstractController
         private RemainingPlacesService $remainingPlacesService
     ) {}
 
-    #[Route('/create_event', name: 'create_event')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function createEvent(Request $request): Response
-    {
-        $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $event->setCreator($this->getUser());
-            $this->entityManager->persist($event);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('events');
-        }
-
-        return $this->render('event/create.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
     #[Route('/events', name: 'events')]
     public function getEvents(): Response
     {
@@ -113,6 +91,28 @@ class EventController extends AbstractController
         $mailService->sendCancellationConfirmation($user->getEmail());
 
         return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+    }
+
+    #[Route('/create_event', name: 'create_event')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function createEvent(Request $request): Response
+    {
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event->setCreator($this->getUser());
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('events');
+        }
+
+        return $this->render('event/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/event/{id}/edit', name:'event_edit')]
