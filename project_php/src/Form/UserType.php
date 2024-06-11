@@ -45,7 +45,7 @@ class UserType extends AbstractType
                         new NotBlank(['message' => 'Saisir un mot de passe']),
                         new Length(['min' => 8, 'minMessage' => 'Votre mot de passe doit avoir une longueur minimale de {{ limit }} caractères.']),
                         new Regex([
-                            'pattern' => '/^(?=.[A-Za-z])(?=.\d)/',
+                            'pattern' => '#^(?=.*[A-Za-z])(?=.*\d).+$#',
                             'message' => 'Le mot de passe doit contenir au moins une lettre et un chiffre.',
                         ]),
                     ]
