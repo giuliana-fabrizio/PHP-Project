@@ -28,8 +28,8 @@ class UserProfileController extends AbstractController
 
         // $this->denyAccessUnlessGranted('view_profile', $user);
         if (!$this->isGranted(ProfileVoter::VIEW, $user)) {
-            $this->addFlash('danger', "Vous n'avez pas la permission d'accéder à cette ressource.");
-            throw $this->createAccessDeniedException('You do not have permission to view this profile.');
+            $this->addFlash('danger', "Vous n'avez pas la permission de voir ce profil.");
+            throw $this->createAccessDeniedException("Vous n'avez pas la permission de voir ce profil.");
         }
 
         return $this->render('profile/view.html.twig', [
@@ -44,8 +44,8 @@ class UserProfileController extends AbstractController
 
         // $this->denyAccessUnlessGranted('edit_profile', $user);
         if (!$this->isGranted(ProfileVoter::EDIT, $user)) {
-            $this->addFlash('danger', "Vous n'avez pas la permission d'accéder à cette ressource.");
-            throw $this->createAccessDeniedException('You do not have permission to view this profile.');
+            $this->addFlash('danger', "Vous n'avez pas la permission de modifier ce profil.");
+            throw $this->createAccessDeniedException("Vous n'avez pas la permission de modifier ce profil.");
         }
 
         $profileForm = $this->createForm(UserProfileType::class, $user);
@@ -56,7 +56,7 @@ class UserProfileController extends AbstractController
         
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $doctrine->getManager()->flush();
-            $this->addFlash('success', 'Profile updated successfully');
+            $this->addFlash('success', 'Profil mis à jour avec succès');
             return $this->redirectToRoute('app_profile');
         }
 
@@ -90,7 +90,7 @@ class UserProfileController extends AbstractController
             $encodedPassword = $passwordHasher->hashPassword($user, $plainPassword);
             $user->setPassword($encodedPassword);
             $doctrine->getManager()->flush();
-            $this->addFlash('success', 'Password changed successfully');
+            $this->addFlash('success', 'Mot de passe mis à jour avec succès');
             return $this->redirectToRoute('app_profile');
         }
 
