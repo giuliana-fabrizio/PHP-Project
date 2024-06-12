@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EventType extends AbstractType
 {
@@ -27,11 +28,23 @@ class EventType extends AbstractType
             ])
             ->add('datetime_start', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de début de l\'évènement'
+                'label' => 'Date et heure de début de l\'évènement',
+                'constraints' => [
+                    new Assert\GreaterThanOrEqual([
+                        'value' => 'today',
+                        'message' => 'La date de début ne peut pas être dans le passé.',
+                    ])
+                ]
             ])
             ->add('datetime_end', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de fin de l\'évènement'
+                'label' => 'Date et heure de fin de l\'évènement',
+                'constraints' => [
+                    new Assert\GreaterThanOrEqual([
+                        'propertyPath' => 'parent.all[datetime_start].data',
+                        'message' => 'La date de fin doit être après la date de début.',
+                    ])
+                ]
             ])
             ->add('participant_count', IntegerType::class, [
                 'label' => 'Nombre de participants'
