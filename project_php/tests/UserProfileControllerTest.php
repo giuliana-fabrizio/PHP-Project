@@ -15,7 +15,6 @@ class UserProfileControllerTest extends WebTestCase
         $container = $client->getContainer();
         $entityManager = $container->get('doctrine')->getManager();
 
-        // Créez et authentifiez un utilisateur de test
         $user = new User();
         $user->setEmail('testuser@example.com');
         $user->setNom('Doe');
@@ -35,34 +34,32 @@ class UserProfileControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/profile/edit');
         $this->assertResponseIsSuccessful();
 
-
-        // Remplir le formulaire de profil
-        $profileForm = $crawler->selectButton('Valider')->form([
+        $profileForm = $crawler->selectButton('submit_edit_user')->form([
             'user_profile[email]' => 'updated@example.com',
             'user_profile[prenom]' => 'UpdatedJohn',
             'user_profile[nom]' => 'UpdatedDoe',
         ]);
+
         $client->submit($profileForm);
 
-        // TEST AU DESSUS COMPLET MARCHEEEEE
 
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
-        $this->assertSelectorTextContains('.toast-body', 'Profile updated successfully');
+        $this->assertSelectorTextContains('.toast-body', 'Profil mis à jour avec succès');
 
         $crawler = $client->request('GET', '/profile/edit/password');
-        $passwordForm = $crawler->selectButton('Modifier mot de passe')->form([
-            'change_password[plainPassword][first]' => 'newpassword',
-            'change_password[plainPassword][second]' => 'newpassword',
+        $passwordForm = $crawler->selectButton('submit_edit_password')->form([
+            'change_password[plainPassword][first]' => 'newpassword123',
+            'change_password[plainPassword][second]' => 'newpassword123',
         ]);
+
         $client->submit($passwordForm);
 
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
-        $this->assertSelectorTextContains('.toast-body', 'Password changed successfully');
+        $this->assertSelectorTextContains('.toast-body', 'Mot de passe mis à jour avec succès');
 
-        // // Récupérer l'utilisateur mis à jour
-        // $updatedUser = $entityManager->getRepository(User::class)->findOneBy(['email' => 'updated@example.com']);
-        // $this->assertTrue($passwordHasher->isPasswordValid($updatedUser, 'newpassword'));
+        $updatedUser = $entityManager->getRepository(User::class)->findOneBy(['email' => 'updated@example.com']);
+        $this->assertTrue($passwordHasher->isPasswordValid($updatedUser, 'newpassword123'));
     }
 }
