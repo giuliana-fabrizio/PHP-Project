@@ -1,0 +1,44 @@
+{{ form_start(form, {'attr': {'class': 'container mt-5 card'}}) }}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title text-center">{{ title|default('Créer un nouvel évènement') }}</h1>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                    <div class="form-group">
+                        {{ form_label(form.title, 'Titre de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.datetime_start, 'Date et heure de début de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_widget(form.datetime_start, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.datetime_end, 'Date et heure de fin de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_widget(form.datetime_end, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.participant_count, 'Nombre de participants', {'label_attr': {'class': 'control-label'}}) }}
+                        {{ form_widget(form.participant_count, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form_widget(form.is_public, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(form.is_public, 'Événement public', {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

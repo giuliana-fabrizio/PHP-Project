@@ -41,7 +41,7 @@ class EventType extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Créer'
+                'label' => 'Valider'
             ]);
     }
 
