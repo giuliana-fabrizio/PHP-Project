@@ -21,20 +21,15 @@ class EventController extends AbstractController
         private readonly EventRepository $eventRepository,
         private EntityManagerInterface $entityManager,
         private RemainingPlacesService $remainingPlacesService
-    ) {}
+    ) {
+    }
 
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
         $events = $this->eventRepository->findAvailables();
 
-        foreach ($events as $event) {
-            $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
-        }
-
-        return $this->render('event/list.html.twig', [
-            'events' => $events
-        ]);
+        return $this->renderEvents($events);
     }
 
     #[Route('/events', name: 'events')]
@@ -42,13 +37,7 @@ class EventController extends AbstractController
     {
         $events = $this->eventRepository->findAll();
 
-        foreach ($events as $event) {
-            $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
-        }
-
-        return $this->render('event/list.html.twig', [
-            'events' => $events
-        ]);
+        return $this->renderEvents($events);
     }
 
     #[Route('/event_filter', name: 'event_filter')]
@@ -60,6 +49,15 @@ class EventController extends AbstractController
         $isPublic = $request->query->get('isPublic');
 
         $events = $this->eventRepository->findByFilters($name, $date_start, $date_end, $isPublic);
+
+        return $this->renderEvents($events);
+    }
+
+    public function renderEvents(array $events): Response
+    {
+        foreach ($events as $event) {
+            $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
+        }
 
         return $this->render('event/list.html.twig', ['events' => $events]);
     }
@@ -129,7 +127,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/edit', name:'event_edit')]
+    #[Route('/event/{id}/edit', name: 'event_edit')]
     // #[IsGranted('edit', subject: 'event')]
     public function editEvent(Request $request, Event $event): Response
     {
@@ -152,7 +150,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/delete', name:'event_delete')]
+    #[Route('/event/{id}/delete', name: 'event_delete')]
     // #[IsGranted('delete', subject: 'event')]
     public function deleteEvent(Request $request, Event $event): Response
     {
@@ -161,7 +159,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
         }
 
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($event);
             $this->entityManager->flush();
         }
