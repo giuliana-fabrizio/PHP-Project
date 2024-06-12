@@ -23,6 +23,20 @@ class EventController extends AbstractController
         private RemainingPlacesService $remainingPlacesService
     ) {}
 
+    #[Route('/', name: 'app_index')]
+    public function index(): Response
+    {
+        $events = $this->eventRepository->findAvailables();
+
+        foreach ($events as $event) {
+            $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
+        }
+
+        return $this->render('event/list.html.twig', [
+            'events' => $events
+        ]);
+    }
+
     #[Route('/events', name: 'events')]
     public function getEvents(): Response
     {
