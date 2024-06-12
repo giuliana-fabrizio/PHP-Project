@@ -5,7 +5,7 @@
 {% block body %}
 <div>
     {% if app.request.pathInfo == '/events' %}
-        {% include 'filters.html.twig' %}
+        {% include 'event/filters.html.twig' %}
     {% endif %}
     <ul class="list-group">
         {% for event in events %}
