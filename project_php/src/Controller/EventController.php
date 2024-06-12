@@ -56,10 +56,20 @@ class EventController extends AbstractController
     public function renderEvents(array $events): Response
     {
         foreach ($events as $event) {
+            $event->setDescription($this->truncatedInstructions($event->getDescription()));
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
         return $this->render('event/list.html.twig', ['events' => $events]);
+    }
+
+    public function truncatedInstructions(string $instructions): string
+    {
+        $maxLength = 50;
+        if (strlen($instructions) > $maxLength) {
+            return substr($instructions, 0, $maxLength) . '...';
+        }
+        return $instructions;
     }
 
     #[Route('/event/{id}', name: 'detail_event')]
