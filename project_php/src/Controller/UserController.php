@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\EventController;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\UserProfileType;
@@ -18,9 +19,10 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 class UserController extends AbstractController
 {
     public function __construct(
+        private EventController $eventController,
         private UserProfileVoter $UserProfileVoter,
-        private readonly UserPasswordHasherInterface $passwordHasher)
-    {
+        private readonly UserPasswordHasherInterface $passwordHasher
+    ) {
     }
 
     #[Route('/user_profile', name: 'app_user_profile')]
@@ -46,7 +48,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $events = $user->getEvents();
 
-        return $this->renderEvents($events, $request); // TODO
+        return $this->eventController->renderEvents($events->toArray(), $request);
     }
 
     #[Route('/create_user', name: 'app_create_user')]
@@ -92,7 +94,7 @@ class UserController extends AbstractController
 
         $profileForm = $this->createForm(UserProfileType::class, $user);
         $profileForm->handleRequest($request);
-        
+
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $doctrine->getManager()->flush();
             $this->addFlash('success', 'Profil mis à jour avec succès');
