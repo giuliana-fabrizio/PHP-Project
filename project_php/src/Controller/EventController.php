@@ -95,7 +95,7 @@ class EventController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function register(Event $event, MailService $mailService): Response
     {
-        $this->denyAccessUnlessGranted('register', $event);
+        // $this->denyAccessUnlessGranted('register', $event);
 
         $user = $this->getUser();
         if ($event->getParticipantCount() > count($event->getParticipants())) {
