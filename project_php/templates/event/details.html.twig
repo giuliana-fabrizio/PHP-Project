@@ -3,54 +3,93 @@
 {% block title %}Détail de l'évènement{% endblock %}
 
 {% block body %}
-    <h1>{{ event.title }}</h1>
-    <p>{{ event.description }}</p>
-    <p>Date et heure de départ : {{ event.datetimeStart|date('d/m/Y H:i') }}</p>
-    <p>Date et heure de fin : {{ event.datetimeEnd|date('d/m/Y H:i') }}</p>
-    <p>Nombre de participants : {{ event.participants|length }} / {{ event.participantCount }}</p>
-     <p>Places restantes : {{ remainingPlaces }}</p>
+    <div class="container mt-5">
+        <h1 class="mb-5">{{ event.title }}</h1>
 
-    {% if event.isPublic %}
-        {% if app.user %}
-            {% if event.participants.contains(app.user) %}
-                <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
+        <section id="description" class="mb-5">
+            <h5 class="mb-4"><strong>Description</strong></h5>
+            <p>{{ event.description }}</p>
+        </section>
+
+        <div class="d-flex justify-content-center mb-5 row">
+            <section id="start_date" class="col-6">
+                <h5 class="mb-4"><strong>Dates à retenir</strong></h5>
+                <p><strong>Date et heure de début :</strong> {{ event.datetimeStart|date('d/m/Y H:i') }}</p>
+                <p><strong>Date et heure de fin :</strong> {{ event.datetimeEnd|date('d/m/Y H:i') }}</p>
+            </section>
+
+            <section id="participants" class="col-6">
+                <h5 class="mb-4"><strong>Disponibilité</strong></h5>
+                <div class="d-flex p-0 row">
+                    <p class="col-6"><strong>Places totales :</strong> {{ event.participantCount }}</p>
+                    <p class="col-6"><strong>Nombre de participants :</strong> {{ event.participants|length }} / {{ event.participantCount }}</p>
+                    <p class="col-6"><strong>Places restantes :</strong> {{ remainingPlaces }}</p>
+                    <div class="col-6 m-0 mt-1 p-0 progress">
+                        <div
+                            class="progress-bar"
+                            role="progressbar"
+                            style="width: {{ event.participants|length * 100 / event.participantCount }}%;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {% if event.isPublic %}
+            {% if app.user %}
+                {% if event.participants.contains(app.user) %}
+                    <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
+                {% else %}
+                    <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+                {% endif %}
             {% else %}
-                <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+                <div class="alert alert-info">
+                    Pour vous inscrire à cet évènement, veuillez vous connecter.
+                </div>
             {% endif %}
         {% else %}
-            <p>Pour vous inscrire à cet évènement, veuillez vous connecter.</p>
+            <div class="alert alert-warning">
+                Cet évènement est privé.
+            </div>
         {% endif %}
-    {% else %}
-        <p>Cet évènement est privé.</p>
-    {% endif %}
 
-    {% if event.creator == app.user %}
-    <a href="{{ path('event_edit', { id: event.id }) }}" class="btn btn-primary">Modifier</a>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-        Supprimer
-    </button>
+        {% if event.creator == app.user %}
+            <a href="{{ path('event_edit', { id: event.id }) }}" class="btn btn-primary">Modifier</a>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                Supprimer
+            </button>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cet évènement ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <form action="{{ path('event_delete', { id: event.id }) }}" method="post" style="display:inline;">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Êtes-vous sûr de vouloir supprimer cet évènement ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                            <form action="{{ path('event_delete', { id: event.id }) }}" method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
-{% endif %}
+
+    <style>
+        body {
+            color: #434748;
+        }
+        p strong {
+            font-weight: 500;
+        }
+    </style>
 {% endblock %}
