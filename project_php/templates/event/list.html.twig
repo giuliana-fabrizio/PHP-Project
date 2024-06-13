@@ -30,7 +30,7 @@
                 </thead>
 
                 <tbody>
-                    {% for event in events %}
+                     {% for event in pagination %}
                         {% if event.isPublic or is_granted('IS_AUTHENTICATED_FULLY') %}
                             <tr>
                                 <th class="p-4">{{ event.title }}</th>
@@ -56,6 +56,9 @@
         </div>
     <div>
 </div>
+<div class="pagination">
+    {{ knp_pagination_render(pagination) }}
+</div>
 
 <style>
     .card-header {
@@ -67,5 +70,41 @@
     .fs-5 i {
         font-size: 1.2rem;
     }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+    }
+    .pagination ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 0.5rem;
+    }
+    .pagination li {
+        display: inline;
+    }
+    .pagination a, .pagination span {
+        padding: 0.5rem;
+        color: #007bff;
+        text-decoration: none;
+        border-radius: 0.25rem 1em;
+        transition: background-color 0.2s, color 0.2s;
+    }
+    .pagination a:hover, .pagination span:hover {
+        background-color: #007bff;
+        color: white;
+    }
+    .pagination .current, .pagination .current:hover {
+        background-color: #007bff;
+        color: white;
+        cursor: default;
+    }
+    .pagination .disabled, .pagination .disabled:hover {
+        color: #6c757d;
+        cursor: not-allowed;
+        background-color: #fff;
+    }
 </style>
+
 {% endblock %}

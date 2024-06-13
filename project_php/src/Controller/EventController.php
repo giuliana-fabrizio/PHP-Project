@@ -14,30 +14,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 
 class EventController extends AbstractController
 {
     public function __construct(
         private readonly EventRepository $eventRepository,
         private EntityManagerInterface $entityManager,
-        private RemainingPlacesService $remainingPlacesService
+        private RemainingPlacesService $remainingPlacesService,
+        private PaginatorInterface $paginator
     ) {
     }
 
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $events = $this->eventRepository->findAvailables();
 
-        return $this->renderEvents($events);
+        return $this->renderEvents($events, $request);
     }
 
     #[Route('/events', name: 'events')]
-    public function getEvents(): Response
+    public function getEvents(Request $request): Response
     {
         $events = $this->eventRepository->findAll();
 
-        return $this->renderEvents($events);
+        return $this->renderEvents($events, $request);
     }
 
     #[Route('/event_filter', name: 'event_filter')]
@@ -50,17 +52,23 @@ class EventController extends AbstractController
 
         $events = $this->eventRepository->findByFilters($name, $date_start, $date_end, $isPublic);
 
-        return $this->renderEvents($events);
+        return $this->renderEvents($events, $request);
     }
 
-    public function renderEvents(array $events): Response
+    public function renderEvents(array $events, Request $request): Response
     {
         foreach ($events as $event) {
             $event->setDescription($this->truncatedInstructions($event->getDescription()));
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
         }
 
-        return $this->render('event/list.html.twig', ['events' => $events]);
+        $pagination = $this->paginator->paginate(
+            $events,
+            $request->query->getInt('page', 1), 
+            5
+        );
+
+        return $this->render('event/list.html.twig', ['pagination' => $pagination]);
     }
 
     public function truncatedInstructions(string $instructions): string
@@ -87,6 +95,7 @@ class EventController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function register(Event $event, MailService $mailService): Response
     {
+        $this->denyAccessUnlessGranted('register', $event);
 
         $user = $this->getUser();
         if ($event->getParticipantCount() > count($event->getParticipants())) {
