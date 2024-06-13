@@ -8,7 +8,7 @@
         {% include 'event/filters.html.twig' %}
     {% endif %}
     <ul class="list-group">
-        {% for event in events %}
+        {% for event in pagination %}
             {% if event.isPublic or is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ path('detail_event', {'id': event.id}) }}" class="text-dark">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -29,5 +29,8 @@
             {% endif %}
         {% endfor %}
     </ul>
+</div>
+<div class="pagination">
+    {{ knp_pagination_render(pagination) }}
 </div>
 {% endblock %}
