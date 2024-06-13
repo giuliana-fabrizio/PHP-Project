@@ -40,7 +40,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user_events', name: 'user_events')]
+    #[Route('/user_events', name: 'app_user_events')]
     public function getUserEvents(Request $request): Response
     {
         $user = $this->getUser();
@@ -49,7 +49,7 @@ class UserController extends AbstractController
         return $this->renderEvents($events, $request); // TODO
     }
 
-    #[Route('/create_user', name: 'create_user')]
+    #[Route('/create_user', name: 'app_create_user')]
     public function createuser(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();

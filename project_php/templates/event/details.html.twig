@@ -39,12 +39,12 @@
             {% if event.isPublic %}
                 {% if app.user %}
                     {% if event.participants.contains(app.user) %}
-                        <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-warning">
+                        <a href="{{ path('app_event_unregister', {id: event.id}) }}" class="btn btn-warning">
                             Annuler l'inscription
                             <i class="bi bi-x-circle"></i>
                         </a>
                     {% else %}
-                        <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">
+                        <a href="{{ path('app_event_register', {id: event.id}) }}" class="btn btn-success">
                             S'inscrire
                             <i class="bi bi-check2"></i>
                         </a>
@@ -61,7 +61,7 @@
             {% endif %}
 
             {% if event.creator == app.user %}
-                <a href="{{ path('event_edit', { id: event.id }) }}" class="btn btn-primary">
+                <a href="{{ path('app_event_edit', { id: event.id }) }}" class="btn btn-primary">
                     Modifier
                     <i class="bi bi-pencil-square"></i>
                 </a>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                <form action="{{ path('event_delete', { id: event.id }) }}" method="post" style="display:inline;">
+                                <form action="{{ path('app_event_delete', { id: event.id }) }}" method="post" style="display:inline;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </form>

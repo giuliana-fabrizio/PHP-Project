@@ -34,7 +34,7 @@ class EventControllerTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $client->request('GET', '/event_filter', [
+        $client->request('GET', '/app_event_filter', [
             'name' => 'Concert',
             'date_start' => '2023-01-01',
             'date_end' => '2023-12-31',
@@ -96,7 +96,7 @@ class EventControllerTest extends WebTestCase
         $entityManager->flush();
 
         $client->loginUser($user);
-        $crawler = $client->request('GET', '/create_event');
+        $crawler = $client->request('GET', '/app_create_event');
         
         $this->assertResponseIsSuccessful();
         $form = $crawler->selectButton('Valider')->form([
