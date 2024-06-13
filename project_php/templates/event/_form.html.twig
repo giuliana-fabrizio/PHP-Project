@@ -1,50 +1,40 @@
-{{ form_start(form, {'attr': {'class': 'container mt-5 card'}}) }}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h1 class="card-title text-center">{{ title|default('Créer un nouvel évènement') }}</h1>
+{{ form_start(form, {'attr': {'class': 'container d-flex justify-content-center align-items-center min-vh-100'}}) }}
+    <div class="card p-4" style="max-width: 650px; width: 100%;">
+        <div class="card-body">
+            <h2 class="card-title text-primary text-center">{{ title|default('Créer un nouvel évènement') }}</h2>
+            <div class="form-group">
+                {{ form_label(form.title, 'Titre de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter event title'}}) }}
+                {{ form_errors(form.title) }}
             </div>
-            <div class="card-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        {{ form_label(form.title, 'Titre de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
-                        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.title) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'control-label'}}) }}
-                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.description) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.datetime_start, 'Date et heure de début de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
-                        {{ form_widget(form.datetime_start, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.datetime_start) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.datetime_end, 'Date et heure de fin de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
-                        {{ form_widget(form.datetime_end, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.datetime_end) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.participant_count, 'Nombre de participants', {'label_attr': {'class': 'control-label'}}) }}
-                        {{ form_widget(form.participant_count, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.participant_count) }}
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            {{ form_widget(form.is_public, {'attr': {'class': 'form-check-input'}}) }}
-                            {{ form_label(form.is_public, 'Événement public', {'label_attr': {'class': 'form-check-label'}}) }}
-                            {{ form_errors(form.is_public) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                    </div>
-                </div>
+            <div class="form-group">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter event description'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.datetime_start, 'Date et heure de début de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.datetime_start, {'attr': {'class': 'form-control', 'placeholder': 'Select start date and time'}}) }}
+                {{ form_errors(form.datetime_start) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.datetime_end, 'Date et heure de fin de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.datetime_end, {'attr': {'class': 'form-control', 'placeholder': 'Select end date and time'}}) }}
+                {{ form_errors(form.datetime_end) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.participant_count, 'Nombre de participants', {'label_attr': {'class': 'control-label'}}) }}
+                {{ form_widget(form.participant_count, {'attr': {'class': 'form-control', 'placeholder': 'Enter number of participants'}}) }}
+                {{ form_errors(form.participant_count) }}
+            </div>
+            <div class="form-group form-check">
+                {{ form_widget(form.is_public, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.is_public, 'Événement public', {'label_attr': {'class': 'form-check-label'}}) }}
+                {{ form_errors(form.is_public) }}
+            </div>
+            <div class="form-group">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-block'}}) }}
             </div>
         </div>
     </div>
-</div>
 {{ form_end(form) }}
