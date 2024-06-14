@@ -37,7 +37,17 @@
 
         <div class="d-flex justify-content-around row">
             {% if event.isPublic %}
+                {% if event.price %}
+                    <form action="/checkout" method="POST">
+                        <button type="submit" class="btn btn-info" id="checkout-button">
+                            Acheter
+                            <i class="bi bi-basket"></i>
+                        </button>
+                    </form>
+                {% endif %}
+
                 {% if app.user %}
+
                     {% if event.participants.contains(app.user) %}
                         <a href="{{ path('app_event_unregister', {id: event.id}) }}" class="btn btn-warning">
                             Annuler l'inscription
@@ -49,16 +59,14 @@
                             <i class="bi bi-check2"></i>
                         </a>
                     {% endif %}
+
                 {% else %}
                     <div class="alert alert-info">
                         Pour vous inscrire à cet évènement, veuillez vous connecter.
                     </div>
                 {% endif %}
+
             {% else %}
-                <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
-                <form action="/checkout" method="POST">
-                    <button type="submit" class="btn btn-primary btn-lg" id="checkout-button">Checkout</button>
-                </form>
                 <div class="alert alert-warning">
                     Cet évènement est privé.
                 </div>

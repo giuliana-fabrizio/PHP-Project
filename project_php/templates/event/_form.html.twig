@@ -2,11 +2,6 @@
     <div class="card p-4" style="max-width: 650px; width: 100%;">
         <div class="card-body">
             <h2 class="card-title text-primary text-center">{{ title|default('Créer un nouvel évènement') }}</h2>
-            <div class="form-group">
-                {{ form_label(form.title, 'Titre de l\'évènement', {'label_attr': {'class': 'control-label'}}) }}
-                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter event title'}}) }}
-                {{ form_errors(form.title) }}
-            </div>
             <div class="card-body">
                 <div class="form-horizontal">
                     <div class="form-group">
