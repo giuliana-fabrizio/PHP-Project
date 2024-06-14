@@ -13,7 +13,7 @@
         "doctrine/orm": "^3.2",
         "knplabs/knp-paginator-bundle": "^6.4",
         "mailjet/mailjet-apiv3-php": "^1.6",
-        "stripe/stripe-php": "^14.9",
+        "stripe/stripe-php": "^14.10",
         "symfony/asset": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
