@@ -62,10 +62,13 @@
                             <i class="bi bi-x-circle"></i>
                         </a>
                     {% else %}
+                     <form action="/pay_event/{{ event.id }}" method="POST">
                         <a href="{{ path('app_event_register', {id: event.id}) }}" class="btn btn-success">
                             S'inscrire
                             <i class="bi bi-check2"></i>
                         </a>
+
+                    </form>
                     {% endif %}
 
                 {% else %}
