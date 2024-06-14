@@ -31,6 +31,10 @@ class EventController extends AbstractController
     {
         $events = $this->eventRepository->findAvailables();
 
+        $events = array_filter($events, function ($event) {
+            return $this->isGranted(EventVoter::VIEW, $event);
+        });
+
         return $this->renderEvents($events, $request);
     }
 

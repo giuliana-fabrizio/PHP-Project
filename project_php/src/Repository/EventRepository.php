@@ -60,7 +60,7 @@ class EventRepository extends ServiceEntityRepository
     public function findAvailables(): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.is_public = 1')
+            // ->where('e.is_public = 1')
             ->andWhere('e.datetime_start >= :today')
             ->andWhere('SIZE(e.participants) < e.participant_count')
             ->setParameter('today', new \DateTime('today'))

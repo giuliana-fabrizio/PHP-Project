@@ -37,6 +37,8 @@ class EventVoter extends Voter
         }
 
         switch ($attribute) {
+            case self::VIEW:
+                return $this->canView($event, $user);
             case self::EDIT:
                 return $this->canEdit($event, $user);
             case self::DELETE:
@@ -44,6 +46,11 @@ class EventVoter extends Voter
         }
 
         return false;
+    }
+
+    private function canView(Event $event, User $user): bool
+    {
+        return $event->isPublic();
     }
 
     private function canEdit(Event $event, User $user): bool
