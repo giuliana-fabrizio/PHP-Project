@@ -1,0 +1,28 @@
+{# templates/event/participants.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Participants - {{ event.title }}{% endblock %}
+
+{% block body %}
+    <h1>Participants - {{ event.title }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom complet</th>
+                <th>Email</th>
+                <th>Statut de paiement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <td>{{ participant.getPrenom() }} {{ participant.getNom() }}</td>
+                    <td>{{ participant.getEmail() }}</td>
+                    {# <td>{% if participant.hasPaid %}Payé{% else %}Non payé{% endif %}</td> #}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

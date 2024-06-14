@@ -87,11 +87,18 @@ class EventController extends AbstractController
     #[Route('/event/{id}', name: 'app_detail_event')]
     public function detailEvent(Event $event): Response
     {
-        $remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
+        
+        if ($this->getUser() === $event->getCreator()) {
+            return $this->render('event/details.html.twig', [
+                'event' => $event,
+                'remainingPlaces' => $this->remainingPlacesService->calculateRemainingPlaces($event),
+                'showParticipantsLink' => true, 
+            ]);
+        }
 
         return $this->render('event/details.html.twig', [
             'event' => $event,
-            'remainingPlaces' => $remainingPlaces
+            'remainingPlaces' => $this->remainingPlacesService->calculateRemainingPlaces($event),
         ]);
     }
 
@@ -191,5 +198,17 @@ class EventController extends AbstractController
         }
 
         return $this->redirectToRoute('app_events');
+    }
+
+    #[Route('/event/{id}/participants', name: 'app_event_participants')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function eventParticipants(Event $event): Response
+    {
+        $participants = $event->getParticipants();
+
+        return $this->render('event/participants.html.twig', [
+            'event' => $event,
+            'participants' => $participants,
+        ]);
     }
 }
