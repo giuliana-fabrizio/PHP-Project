@@ -44,6 +44,9 @@ class Event
     #[ORM\JoinColumn(nullable: false)]
     private ?User $creator = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?float $price = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -163,6 +166,17 @@ class Event
     public function setCreator(?User $creator): static
     {
         $this->creator = $creator;
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): static
+    {
+        $this->price = $price;
         return $this;
     }
 }

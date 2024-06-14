@@ -24,6 +24,7 @@
                         <td>Nom de l'évènement</td>
                         <td>Date de début</td>
                         <td>Description</td>
+                        <td>Prix</td>
                         <td>Places restantes</td>
                         <td></td>
                     </tr>
@@ -36,6 +37,13 @@
                                 <th class="p-4">{{ event.title }}</th>
                                 <td class="p-4 text-gray">{{ event.datetimeStart|date('d/m/Y') }}</td>
                                 <td class="p-4 text-gray">{{ event.description }}</td>
+                                <td class="p-4 text-gray">
+                                {% if event.price %}
+                                    <p>Coût de participation : {{ event.price }} €</p>
+                                {% else %}
+                                    <p>Événement gratuit</p>
+                                {% endif %}
+                                </td>
                                 <td class="p-4 text-gray">
                                     {% if event.participantCount == event.participants|length %}
                                         <span class="badge badge-danger p-1">Complet</span>

@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,6 +49,11 @@ class EventType extends AbstractType
             ])
             ->add('participant_count', IntegerType::class, [
                 'label' => 'Nombre de participants'
+            ])
+            ->add('price', NumberType::class, [
+                'required' => false,
+                'label' => 'Coût de participation (€)',
+                'attr' => ['placeholder' => 'Laissez vide pour un événement gratuit']
             ])
             ->add('is_public', CheckboxType::class, [
                 'label' => 'Événement public',

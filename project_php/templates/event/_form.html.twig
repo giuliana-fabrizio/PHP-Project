@@ -33,6 +33,11 @@
                         {{ form_errors(form.participant_count) }}
                     </div>
                     <div class="form-group">
+                        {{ form_label(form.price) }}
+                        {{ form_widget(form.price, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                    <div class="form-group">
                         <div class="form-check">
                             {{ form_widget(form.is_public, {'attr': {'class': 'form-check-input'}}) }}
                             {{ form_label(form.is_public, 'Événement public', {'label_attr': {'class': 'form-check-label'}}) }}
