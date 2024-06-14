@@ -3,39 +3,39 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title text-center">Profil</h1>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4" style="max-width: 600px; width: 100%;">
+            <div class="card-body">
+                <h2 class="card-title text-primary text-center">Profil</h2>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"><strong>Email :</strong></label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">{{ user.email }}</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Email :</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-plaintext">{{ user.email }}</p>
-                        </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"><strong>Prénom :</strong></label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">{{ user.prenom }}</p>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Prénom :</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-plaintext">{{ user.prenom }}</p>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"><strong>Nom :</strong></label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">{{ user.nom }}</p>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Nom :</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-plaintext">{{ user.nom }}</p>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">Éditer Profil</a>
-                        <a href="{{ path('app_profile_edit_password') }}" class="btn btn-danger">Modifier mot de passe</a>
-                    </div>
+                </div>
+                <div class="d-flex justify-content-around mt-4 row">
+                    <a href="{{ path('app_edit_user') }}" class="btn btn-primary">
+                        Modifier le profil
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                    <a href="{{ path('app_edit_user_password') }}" class="btn btn-danger">
+                        Modifier le mot de passe
+                        <i class="bi bi-lock"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

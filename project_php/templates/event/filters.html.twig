@@ -1,7 +1,7 @@
 {% block body %}
     <div class="container">
         <h4 class="mb-4">Filtres</h4>
-        <form method="get" action="{{ path('event_filter') }}" class="mb-4">
+        <form method="get" action="{{ path('app_event_filter') }}" class="mb-4">
             <div class="form-group">
                 <label for="name">Nom</label>
                 <input type="text" id="name" name="name" class="form-control" minlength="3" placeholder="Saisir 3 caractères minimum">
@@ -24,7 +24,7 @@
             </div>
             <button type="submit" class="btn btn-primary mt-2">Filtrer</button>
             {% if app.request.query.has('name') or app.request.query.has('date_start') or app.request.query.has('date_end') or app.request.query.has('isPublic') %}
-                <button href="{{ path('events') }}" class="btn btn-secondary mt-2">Réinitialiser</a>
+                <button href="{{ path('app_events') }}" class="btn btn-secondary mt-2">Réinitialiser</a>
             {% endif %}
         </form>
     </div>

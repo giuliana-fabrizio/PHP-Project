@@ -1,25 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier Profil{% endblock %}
+{% block title %}Modifier le profil{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title text-center">Modifier Profil</h1>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4" style="max-width: 600px; width: 100%;">
+        <div class="card-body">
+            <h2 class="card-title text-primary text-center">Modifier le profil</h2>
+            {{ form_start(profileForm) }}
+                <div class="form-group">
+                    {{ form_label(profileForm.nom, 'Nom', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(profileForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre prénom'}}) }}
+                    {{ form_errors(profileForm.nom) }}
                 </div>
-                <div class="card-body">
-                    {{ form_start(profileForm) }}
-                        {{ form_widget(profileForm) }}
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary" id="submit_edit_user">Valider</button>
-                            <a href="{{ path('app_profile') }}" class="btn btn-secondary">Annuler</a>
-                        </div>
-                    {{ form_end(profileForm) }}
+                <div class="form-group">
+                    {{ form_label(profileForm.prenom, 'Prénom', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(profileForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre nom'}}) }}
+                    {{ form_errors(profileForm.prenom) }}
                 </div>
-            </div>
+                <div class="form-group">
+                    {{ form_label(profileForm.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(profileForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre email'}}) }}
+                    {{ form_errors(profileForm.email) }}
+                </div>
+                <div class="d-flex justify-content-around mt-4 row">
+                    <button type="submit" class="btn btn-success" id="submit_edit_user">
+                        Valider
+                        <i class="bi bi-check2"></i>
+                    </button>
+                    <a href="{{ path('app_user_profile') }}" class="btn btn-warning">
+                        Annuler
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                </div>
+            {{ form_end(profileForm) }}
         </div>
     </div>
 </div>

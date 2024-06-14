@@ -31,7 +31,7 @@ class UserProfileControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/edit');
+        $crawler = $client->request('GET', '/edit_user');
         $this->assertResponseIsSuccessful();
 
         $profileForm = $crawler->selectButton('submit_edit_user')->form([
@@ -47,7 +47,7 @@ class UserProfileControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('.toast-body', 'Profil mis à jour avec succès');
 
-        $crawler = $client->request('GET', '/profile/edit/password');
+        $crawler = $client->request('GET', '/edit_user/password');
         $passwordForm = $crawler->selectButton('submit_edit_password')->form([
             'change_password[plainPassword][first]' => 'newpassword123',
             'change_password[plainPassword][second]' => 'newpassword123',

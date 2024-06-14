@@ -34,7 +34,7 @@ class EventController extends AbstractController
         return $this->renderEvents($events, $request);
     }
 
-    #[Route('/events', name: 'events')]
+    #[Route('/events', name: 'app_events')]
     public function getEvents(Request $request): Response
     {
         $events = $this->eventRepository->findAll();
@@ -42,7 +42,7 @@ class EventController extends AbstractController
         return $this->renderEvents($events, $request);
     }
 
-    #[Route('/event_filter', name: 'event_filter')]
+    #[Route('/event_filter', name: 'app_event_filter')]
     public function filterEvents(Request $request): Response
     {
         $name = $request->query->get('name');
@@ -80,7 +80,7 @@ class EventController extends AbstractController
         return $instructions;
     }
 
-    #[Route('/event/{id}', name: 'detail_event')]
+    #[Route('/event/{id}', name: 'app_detail_event')]
     public function detailEvent(Event $event): Response
     {
         $remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
@@ -91,11 +91,11 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/register', name: 'event_register')]
+    #[Route('/event/{id}/register', name: 'app_event_register')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function register(Event $event, MailService $mailService): Response
     {
-        $this->denyAccessUnlessGranted('register', $event);
+        // $this->denyAccessUnlessGranted('register', $event);
 
         $user = $this->getUser();
         if ($event->getParticipantCount() > count($event->getParticipants())) {
@@ -106,10 +106,10 @@ class EventController extends AbstractController
             $mailService->sendRegistrationConfirmation($user->getEmail());
         }
 
-        return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+        return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
     }
 
-    #[Route('/event/{id}/unregister', name: 'event_unregister')]
+    #[Route('/event/{id}/unregister', name: 'app_event_unregister')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function unregister(Event $event, MailService $mailService): Response
     {
@@ -120,10 +120,10 @@ class EventController extends AbstractController
 
         $mailService->sendCancellationConfirmation($user->getEmail());
 
-        return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+        return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
     }
 
-    #[Route('/create_event', name: 'create_event')]
+    #[Route('/create_event', name: 'app_create_event')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function createEvent(Request $request): Response
     {
@@ -137,7 +137,7 @@ class EventController extends AbstractController
             $this->entityManager->persist($event);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('events');
+            return $this->redirectToRoute('app_events');
         }
 
         return $this->render('event/create.html.twig', [
@@ -145,13 +145,13 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/edit', name: 'event_edit')]
+    #[Route('/event/{id}/edit', name: 'app_event_edit')]
     // #[IsGranted('edit', subject: 'event')]
     public function editEvent(Request $request, Event $event): Response
     {
         if (!$this->isGranted(EventVoter::EDIT, $event)) {
             $this->addFlash('danger', "Vous n'avez pas la permission de modifier cet évènement.");
-            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+            return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
         }
 
         $form = $this->createForm(EventType::class, $event);
@@ -159,7 +159,7 @@ class EventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
-            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+            return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
         }
 
         return $this->render('event/edit.html.twig', [
@@ -168,13 +168,13 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}/delete', name: 'event_delete')]
+    #[Route('/event/{id}/delete', name: 'app_event_delete')]
     // #[IsGranted('delete', subject: 'event')]
     public function deleteEvent(Request $request, Event $event): Response
     {
         if (!$this->isGranted(EventVoter::DELETE, $event)) {
             $this->addFlash('danger', "Vous n'avez pas la permission de supprimer cet évènement.");
-            return $this->redirectToRoute('detail_event', ['id' => $event->getId()]);
+            return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
         }
 
         if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
@@ -182,6 +182,6 @@ class EventController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return $this->redirectToRoute('events');
+        return $this->redirectToRoute('app_events');
     }
 }

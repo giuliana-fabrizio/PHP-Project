@@ -1,48 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un nouvel utilisateur{% endblock %}
+{% block title %}Créer un compte{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title text-center">Créer un nouvel utilisateur</h1>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <h2 class="card-title text-primary">Créer un compte</h2>
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre nom'}}) }}
+                    {{ form_errors(form.nom) }}
                 </div>
-                <div class="card-body">
-                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-                        <div class="form-group">
-                            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.nom) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.prenom) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.email) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.password.first, 'Mot de passe', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.password.first) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.password.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'control-label'}}) }}
-                            {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.password.second) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                        </div>
-                    {{ form_end(form) }}
+                <div class="form-group">
+                    {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre prénom'}}) }}
+                    {{ form_errors(form.prenom) }}
                 </div>
-            </div>
+                <div class="form-group">
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Saisr votre email'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.password.first, 'Mot de passe', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(form.password.first, {'attr': {'class': 'form-control', 'placeholder': 'Saisir votre mot de passe'}}) }}
+                    {{ form_errors(form.password.first) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.password.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(form.password.second, {'attr': {'class': 'form-control', 'placeholder': 'Confirmer votre mot de passe'}}) }}
+                    {{ form_errors(form.password.second) }}
+                </div>
+                <div class="form-group">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-block'}}) }}
+                </div>
+
+                <a href="{{ path('app_login') }}" class="text-primary">Déjà un compte ? Connectez-vous !</a>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>
