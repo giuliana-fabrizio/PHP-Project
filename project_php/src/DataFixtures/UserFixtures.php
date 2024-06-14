@@ -25,6 +25,7 @@ class UserFixtures extends Fixture
             ['nom' => 'Dupont', 'prenom' => 'Jean', 'email' => 'jean.dupont@example.com', 'password' => 'password1'],
             ['nom' => 'Martin', 'prenom' => 'Marie', 'email' => 'marie.martin@example.com', 'password' => 'password2'],
             ['nom' => 'Durand', 'prenom' => 'Pierre', 'email' => 'pierre.durand@example.com', 'password' => 'password3'],
+            ['nom' => 'Admin', 'prenom' => 'Admin', 'email' => 'admin@example.com', 'password' => 'admin', 'roles' => ['ROLE_ADMIN']],
         ];
 
         foreach ($users as $key => $userData) {
@@ -32,7 +33,7 @@ class UserFixtures extends Fixture
             $user->setNom($userData['nom']);
             $user->setPrenom($userData['prenom']);
             $user->setEmail($userData['email']);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles($userData['roles'] ?? ['ROLE_USER']); 
             $user->setPassword($this->passwordHasher->hashPassword($user, $userData['password']));
             
             $errors = $this->validator->validate($user);
