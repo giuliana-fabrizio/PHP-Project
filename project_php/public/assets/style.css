@@ -7,7 +7,7 @@
     padding: 10px 20px;
     border: none;
     transition: background-color 0.3s, transform 0.3s;
-    min-width: 150px;
+    min-width: 120px;
 }
 
 .btn:hover {

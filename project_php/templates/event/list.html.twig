@@ -8,13 +8,13 @@
 
         <div class="d-flex justify-content-center row">
             <div class="col-12 col-sm-3 p-0">
-                {% if app.request.pathInfo == '/events' %}
+                {% if app.request.pathInfo == '/events' or app.request.pathInfo == '/event_filter' %}
                     {% include 'event/filters.html.twig' %}
                 {% endif %}
             </div>
 
             <div class="col-12
-                        {% if app.request.pathInfo == '/events' %}
+                        {% if app.request.pathInfo == '/events' or app.request.pathInfo == '/event_filter' %}
                             col-sm-9
                         {% endif %}">
 
