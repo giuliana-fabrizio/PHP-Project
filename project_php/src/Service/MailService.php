@@ -34,4 +34,12 @@ class MailService
     {
         $this->sendEmail($to, 'Confirmation d\'annulation', 'Vous avez annulé votre inscription à l\'évènement.');
     }
+    public function sendPaymentSuccessConfirmation(string $to): void
+    {
+        $this->sendEmail($to, 'Confirmation de paiement', 'Votre paiement a été effectué avec succès.');
+    }
+    public function sendPaymentFailure(string $to): void
+    {
+        $this->sendEmail($to, 'Paiement echoué', 'Votre paiement a été echoué.');
+    }
 }
