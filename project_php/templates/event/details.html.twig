@@ -16,6 +16,9 @@
                 <a href="{{ path('event_unregister', {id: event.id}) }}" class="btn btn-danger">Annuler l'inscription</a>
             {% else %}
                 <a href="{{ path('event_register', {id: event.id}) }}" class="btn btn-success">S'inscrire</a>
+                <form action="/checkout" method="POST">
+                    <button type="submit" class="btn btn-primary btn-lg" id="checkout-button">Checkout</button>
+                </form>
             {% endif %}
         {% else %}
             <p>Pour vous inscrire à cet évènement, veuillez vous connecter.</p>
