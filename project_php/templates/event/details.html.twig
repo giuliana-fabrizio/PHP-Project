@@ -46,7 +46,7 @@
         <div class="d-flex justify-content-around row">
             {% if event.isPublic %}
                 {% if event.price %}
-                    <form action="/checkout" method="POST">
+                    <form action="/pay_event/{{ event.id }}" method="POST">
                         <button type="submit" class="btn btn-info" id="checkout-button">
                             Acheter
                             <i class="bi bi-basket"></i>
