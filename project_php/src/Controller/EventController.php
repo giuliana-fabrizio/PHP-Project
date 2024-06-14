@@ -108,6 +108,10 @@ class EventController extends AbstractController
             $this->entityManager->flush();
 
             $mailService->sendRegistrationConfirmation($user->getEmail());
+
+            if ($event->getPrice() > 0) {
+                return $this->redirectToRoute('app_pay_event', ['id' => $event->getId()]);
+            }
         }
 
         return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
