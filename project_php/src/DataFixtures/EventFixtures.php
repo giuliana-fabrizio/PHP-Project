@@ -19,6 +19,9 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
             $event->setDatetimeEnd(new \DateTime('now + ' . ($i + 1) . ' days'));
             $event->setParticipantCount(mt_rand(1, 100));
             $event->setIsPublic((bool)mt_rand(0, 1));
+            $price = mt_rand(0, 1) ? mt_rand(0, 100) : 0;
+            $event->setPrice($price);
+
 
             $userReference = $this->getReference('user_' . ($i % 3));
             $event->setCreator($userReference);
