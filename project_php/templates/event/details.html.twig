@@ -4,7 +4,15 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-5">{{ event.title }}</h1>
+        <h1 class="mb-3">{{ event.title }}</h1>
+
+        <section id="price" class="mb-5">
+            {% if event.price %}
+                <p class="card-text"><strong>Prix :</strong> {{ event.price }} €</p>
+            {% else %}
+                <p class="card-text"><strong>Gratuit</strong></p>
+            {% endif %}
+        </section>
 
         <section id="description" class="mb-5">
             <h5 class="mb-4"><strong>Description</strong></h5>
@@ -38,7 +46,7 @@
         <div class="d-flex justify-content-around row">
             {% if event.isPublic %}
                 {% if event.price %}
-                    <form action="/checkout" method="POST">
+                    <form action="/pay_event/{{ event.id }}" method="POST">
                         <button type="submit" class="btn btn-info" id="checkout-button">
                             Acheter
                             <i class="bi bi-basket"></i>

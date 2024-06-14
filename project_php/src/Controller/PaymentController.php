@@ -7,31 +7,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Entity\Event;
 
 class PaymentController extends AbstractController
 {
-    #[Route(path: '/payment', name: 'payment')]
-    public function index(): Response
-    {
-        return $this->render('payment/index.html.twig', [
-            'controller_name' => 'PaymentController',
-        ]);
-    }
-
-    
-    #[Route(path: '/checkout', name: 'payment')]
-    public function checkout($stripeSK): Response
+    #[Route(path: '/pay_event/{id}', name: 'app_pay_event')]
+    public function checkout(Event $event, $stripeSK): Response
     {
         $stripe = new \Stripe\StripeClient($stripeSK);
+
+        $priceInCents = (int)round($event->getPrice() * 100);
 
         $checkout_session = $stripe->checkout->sessions->create([
             'line_items' => [[
               'price_data' => [
-                'currency' => 'usd',
+                'currency' => 'eur',
                 'product_data' => [
-                  'name' => 'T-shirt',
+                  'name' => $event->getTitle(),
                 ],
-                'unit_amount' => 2000,
+                'unit_amount' => $priceInCents,
               ],
               'quantity' => 1,
             ]],
@@ -52,6 +46,6 @@ class PaymentController extends AbstractController
     #[Route(path: '/cancel-url', name: 'cancel_url')]
     public function cancelUrl(): Response
     {
-        return $this->render('payment/success.html.twig', []);
+        return $this->render('payment/cancel.html.twig', []);
     }
 }

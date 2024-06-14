@@ -30,16 +30,16 @@ class EventRepository extends ServiceEntityRepository
 
         if ($date_start !== null && $date_start !== '') {
             $dateTime = new \DateTime($date_start);
-            $formattedDate = $dateTime->format('Y-m-d hh:mm:ss');
+            $formattedDate = $dateTime->format('Y-m-d H:i:s');
 
             $qb->andWhere('e.datetime_start >= :date_start')
-                ->setParameter('date_start', $formattedDate . '%');
+                ->setParameter('date_start', $formattedDate);
         }
 
         if ($date_end !== null && $date_end !== '') {
-            $dateTime = (new \DateTime($date_end))->setTime(23, 59, 59);
-
-            $qb->andWhere('e.datetime_end <= :date_end')
+            $dateTime = (new \DateTime($date_end))->modify('+1 day')->setTime(23, 59, 59);
+        
+            $qb->andWhere('e.datetime_end < :date_end')
                 ->setParameter('date_end', $dateTime);
         }
 
@@ -53,13 +53,14 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
     /**
      * @return Event[] Returns an array of Event objects
      */
     public function findAvailables(): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.is_public = 1')
+            // ->where('e.is_public = 1')
             ->andWhere('e.datetime_start >= :today')
             ->andWhere('SIZE(e.participants) < e.participant_count')
             ->setParameter('today', new \DateTime('today'))

@@ -24,10 +24,12 @@
                     </select>
                 </div>
             {% endif %}
-            <button type="submit" class="btn btn-primary mt-2">Filtrer</button>
-            {% if app.request.query.has('name') or app.request.query.has('date_start') or app.request.query.has('date_end') or app.request.query.has('isPublic') %}
-                <button href="{{ path('app_events') }}" class="btn btn-secondary mt-2">Réinitialiser</a>
-            {% endif %}
+            <div class="d-flex justify-content-center mt-1">
+                <form method="GET" action="{{ path('app_events') }}">
+                    <button type="submit" class="btn btn-success">Filtrer</button>
+                </form>
+                <a href="{{ path('app_events') }}" class="btn btn-warning ml-2">Réinitialiser</a>
+            </div>
         </form>
     </div>
 {% endblock %}

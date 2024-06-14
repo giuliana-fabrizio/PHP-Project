@@ -1,0 +1,49 @@
+.badge-primary {
+    background-color: #007bff7f;
+}
+
+.btn {
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: none;
+    transition: background-color 0.3s, transform 0.3s;
+    min-width: 120px;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn i {
+    margin-left: 5px;
+}
+
+.card {
+    border: none;
+}
+
+.pagination a,
+span {
+    padding: 0.5rem;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 0.25rem 1em;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination a:hover,
+span:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination .current {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+}
+
+.separator {
+    border-top: 1px solid #dee2e6;
+    margin: 1rem 0;
+}
