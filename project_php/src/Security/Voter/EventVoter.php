@@ -32,10 +32,6 @@ class EventVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
-            return false;
-        }
-
         switch ($attribute) {
             case self::VIEW:
                 return $this->canView($event, $user);
@@ -48,15 +44,36 @@ class EventVoter extends Voter
         return false;
     }
 
-    private function canView(Event $event, User $user): bool
+    private function canView(Event $event, $user): bool
     {
-        return $event->isPublic();
-    }
-
-    private function canEdit(Event $event, User $user): bool
-    {
+        if ($event->isPublic()) {
+            return true; 
+        }
+    
+        if (!$user instanceof User) {
+            return false; 
+        }
+    
+        if (!$this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return false;
+        }
+    
         return $user === $event->getCreator();
     }
+
+    private function canEdit(Event $event, $user): bool
+{
+    if ($event->isPublic()) {
+        return true;
+    }
+
+    if (!$user instanceof User || !$this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
+        return false;
+    }
+
+    return $user === $event->getCreator();
+}
+
 
     private function canDelete(Event $event, User $user): bool
     {
