@@ -31,10 +31,6 @@ class EventController extends AbstractController
     {
         $events = $this->eventRepository->findAvailables();
 
-        $events = array_filter($events, function ($event) {
-            return $this->isGranted(EventVoter::VIEW, $event);
-        });
-
         return $this->renderEvents($events, $request);
     }
 
@@ -61,6 +57,10 @@ class EventController extends AbstractController
 
     public function renderEvents(array $events, Request $request): Response
     {
+        $events = array_filter($events, function ($event) {
+            return $this->isGranted(EventVoter::VIEW, $event);
+        });
+
         foreach ($events as $event) {
             $event->setDescription($this->truncatedInstructions($event->getDescription()));
             $event->remainingPlaces = $this->remainingPlacesService->calculateRemainingPlaces($event);
@@ -94,6 +94,11 @@ class EventController extends AbstractController
                 'remainingPlaces' => $this->remainingPlacesService->calculateRemainingPlaces($event),
                 'showParticipantsLink' => true, 
             ]);
+        }
+
+        if (!$this->isGranted(EventVoter::VIEW, $event)) {
+            $this->addFlash('danger', "Vous n'avez pas la permission d'accéder à cet évènement.");
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('event/details.html.twig', [
