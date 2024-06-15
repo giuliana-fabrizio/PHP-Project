@@ -50,15 +50,7 @@ class EventVoter extends Voter
             return true; 
         }
     
-        if (!$user instanceof User) {
-            return false; 
-        }
-    
-        if (!$this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return false;
-        }
-    
-        return $user === $event->getCreator();
+        return $this->security->isGranted('IS_AUTHENTICATED_FULLY');
     }
 
     private function canEdit(Event $event, $user): bool
