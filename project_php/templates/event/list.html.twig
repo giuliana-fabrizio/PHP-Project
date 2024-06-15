@@ -39,12 +39,14 @@
                                     {% endif %}
                                 </div>
                                 <div class="d-flex justify-content-center mt-4 row">
-                                    <form action="/pay_event/{{ event.id }}" method="POST">
-                                        <button type="submit" class="btn btn-primary mr-5" id="checkout-button">
-                                            Acheter
-                                            <i class="bi bi-basket"></i>
-                                        </button>
-                                    </form>
+                                    {% if event.price and event.isPublic %}
+                                        <form action="/pay_event/{{ event.id }}" method="POST">
+                                            <button type="submit" class="btn btn-primary mr-5" id="checkout-button">
+                                                Acheter
+                                                <i class="bi bi-basket"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                     <a href="{{ path('app_detail_event', {'id': event.id}) }}" class="btn btn-primary">
                                         Voir plus
                                         <i class="bi bi-plus-circle"></i>
