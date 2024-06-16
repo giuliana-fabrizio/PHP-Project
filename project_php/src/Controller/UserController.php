@@ -73,7 +73,7 @@ class UserController extends AbstractController
                 ]);
             }
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('user/create.html.twig', [
