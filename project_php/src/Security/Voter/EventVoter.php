@@ -54,18 +54,9 @@ class EventVoter extends Voter
     }
 
     private function canEdit(Event $event, $user): bool
-{
-    if ($event->isPublic()) {
-        return true;
+    {
+        return $user === $event->getCreator();
     }
-
-    if (!$user instanceof User || !$this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
-        return false;
-    }
-
-    return $user === $event->getCreator();
-}
-
 
     private function canDelete(Event $event, User $user): bool
     {
