@@ -108,7 +108,7 @@
                 </div>
             {% endif %}
         </div>
-        {% if 'ROLE_ADMIN' in app.user.roles %}
+        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
             {% include 'event/participants.html.twig' with {'participants': event.participants} %}
         {% endif %}
     </div>

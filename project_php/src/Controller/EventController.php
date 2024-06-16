@@ -197,10 +197,10 @@ class EventController extends AbstractController
             return $this->redirectToRoute('app_detail_event', ['id' => $event->getId()]);
         }
 
-        if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($event);
             $this->entityManager->flush();
-        }
+        // }
 
         return $this->redirectToRoute('app_events');
     }
