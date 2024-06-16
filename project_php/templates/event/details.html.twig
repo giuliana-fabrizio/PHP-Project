@@ -45,17 +45,7 @@
 
         <div class="d-flex justify-content-around row">
             {% if event.isPublic %}
-                {% if event.price %}
-                    <form action="/pay_event/{{ event.id }}" method="POST">
-                        <button type="submit" class="btn btn-info" id="checkout-button">
-                            Acheter
-                            <i class="bi bi-basket"></i>
-                        </button>
-                    </form>
-                {% endif %}
-
                 {% if app.user %}
-
                     {% if event.participants.contains(app.user) %}
                         <a href="{{ path('app_event_unregister', {id: event.id}) }}" class="btn btn-warning">
                             Annuler l'inscription
@@ -68,7 +58,6 @@
                                     S'inscrire
                                     <i class="bi bi-check2"></i>
                                 </a>
-
                             </form>
                         {% endif %}
                     {% endif %}
