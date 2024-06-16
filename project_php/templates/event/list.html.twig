@@ -39,12 +39,12 @@
                                     {% endif %}
                                 </div>
                                 <div class="d-flex justify-content-center mt-4 row">
-                                    {% if event.price and event.isPublic %}
+                                    {% if event.price and event.isPublic and not event.participants.contains(app.user) %}
                                         <form action="/pay_event/{{ event.id }}" method="POST">
-                                            <button type="submit" class="btn btn-primary mr-5" id="checkout-button">
+                                            <a href="{{ path('app_event_register', {id: event.id}) }}" class="btn btn-primary mr-5" id="checkout-button">
                                                 Acheter
                                                 <i class="bi bi-basket"></i>
-                                            </button>
+                                            </a>
                                         </form>
                                     {% endif %}
                                     <a href="{{ path('app_detail_event', {'id': event.id}) }}" class="btn btn-primary">
