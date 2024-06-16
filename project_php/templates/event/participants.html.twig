@@ -1,28 +1,26 @@
-{# templates/event/participants.html.twig #}
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Participants - {{ event.title }}{% endblock %}
-
 {% block body %}
-    <h1>Participants - {{ event.title }}</h1>
+    {% if participants|length > 0 %}
+        <h4 class="mb-4">Participants</h4>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom complet</th>
-                <th>Email</th>
-                <th>Statut de paiement</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for participant in participants %}
+        <table class="table mb-5">
+            <thead>
                 <tr>
-                    <td>{{ participant.getPrenom() }} {{ participant.getNom() }}</td>
-                    <td>{{ participant.getEmail() }}</td>
-                    {# <td>{% if participant.hasPaid %}Payé{% else %}Non payé{% endif %}</td> #}
+                    <th>Prénom et nom</th>
+                    <th>Email</th>
+                    <th>Statut du paiement</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for participant in participants %}
+                    <tr>
+                        <td>{{ participant.getPrenom() }} {{ participant.getNom() }}</td>
+                        <td>{{ participant.getEmail() }}</td>
+                        <td>Réussi</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h5 class="mb-4">Pas de participants</h5>
+    {% endif %}
 {% endblock %}

@@ -10,7 +10,6 @@ use Psr\Log\LoggerInterface;
 use Stripe\Stripe;
 use Stripe\Webhook;
 use Stripe\Exception\SignatureVerificationException;
-use App\Repository\UserRepository; // Assurez-vous d'importer les classes nécessaires
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
 
@@ -18,13 +17,11 @@ class WebhookController extends AbstractController
 {
     private $stripeWebhookSecret;
     private $logger;
-    private $userRepository;
 
-    public function __construct(string $stripeWebhookSecret, LoggerInterface $logger, UserRepository $userRepository)
+    public function __construct(string $stripeWebhookSecret, LoggerInterface $logger)
     {
         $this->stripeWebhookSecret = $stripeWebhookSecret;
         $this->logger = $logger;
-        $this->userRepository = $userRepository;
     }
 
     #[Route('/webhook_stripe', name: 'stripe_webhook', methods: ['POST'])]
@@ -49,6 +46,16 @@ class WebhookController extends AbstractController
                 $paymentStatus = $paymentIntent->status; 
                 $this->logger->info('Payment status: ' . $paymentStatus);
                 break;
+            case 'payment_intent.failed':
+                    $paymentIntent = $event->data->object;
+                    $paymentStatus = $paymentIntent->status;
+                    $this->logger->info('Payment failed: ' . $paymentStatus);
+                    break; 
+            case 'payment_intent.processing':
+                    $paymentIntent = $event->data->object;
+                    $paymentStatus = $paymentIntent->status;
+                    $this->logger->info('Payment processing: ' . $paymentStatus);
+                    break;
             default:
                 $this->logger->info('Received unknown event type ' . $event->type);
         }

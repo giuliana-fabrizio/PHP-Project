@@ -43,7 +43,7 @@
             </section>
         </div>
 
-        <div class="d-flex justify-content-around row">
+        <div class="d-flex justify-content-around mb-5 row">
             {% if event.isPublic %}
                 {% if app.user %}
                     {% if event.participants.contains(app.user) %}
@@ -108,6 +108,9 @@
                 </div>
             {% endif %}
         </div>
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            {% include 'event/participants.html.twig' with {'participants': event.participants} %}
+        {% endif %}
     </div>
 
     <style>
