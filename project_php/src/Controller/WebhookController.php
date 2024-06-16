@@ -45,16 +45,19 @@ class WebhookController extends AbstractController
                 $paymentIntent = $event->data->object;
                 $paymentStatus = $paymentIntent->status; 
                 $this->logger->info('Payment status: ' . $paymentStatus);
+                $this->addFlash('success', "Paiement réussi");
                 break;
             case 'payment_intent.failed':
                     $paymentIntent = $event->data->object;
                     $paymentStatus = $paymentIntent->status;
                     $this->logger->info('Payment failed: ' . $paymentStatus);
+                    $this->addFlash('danger', "Paiement échoué");
                     break; 
             case 'payment_intent.processing':
                     $paymentIntent = $event->data->object;
                     $paymentStatus = $paymentIntent->status;
                     $this->logger->info('Payment processing: ' . $paymentStatus);
+                    $this->addFlash('warning', "Paiement en cours");
                     break;
             default:
                 $this->logger->info('Received unknown event type ' . $event->type);
