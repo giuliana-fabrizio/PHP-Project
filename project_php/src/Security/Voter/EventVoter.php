@@ -58,7 +58,7 @@ class EventVoter extends Voter
         return $user === $event->getCreator();
     }
 
-    private function canDelete(Event $event, User $user): bool
+    private function canDelete(Event $event, $user): bool
     {
         return $this->canEdit($event, $user);
     }
