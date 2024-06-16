@@ -8,13 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\MailService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Entity\Event;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends AbstractController
 {
     private MailService $mailService;
 
-    public function __construct(MailService $mailService)
+    public function __construct(private EntityManagerInterface $entityManager, MailService $mailService)
     {
         $this->mailService = $mailService;
     }
@@ -55,6 +56,11 @@ class PaymentController extends AbstractController
     #[Route(path: '/cancel-url/{id}', name: 'cancel_url')]
     public function cancelUrl(Event $event): Response
     {
+        $user = $this->getUser();
+        $event->removeParticipant($user);
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+
         $this->mailService->sendPaymentFailure($this->getUser()->getEmail());
         return $this->render('payment/cancel.html.twig', [
             'event' => $event,
